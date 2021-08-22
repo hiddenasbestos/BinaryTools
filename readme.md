@@ -6,12 +6,6 @@ A combined suite of utilities for manipulating binary data files.
 It was developed for use on Windows but might compile on other systems.
 Released under the MIT License.
 
-**Usage**
-```
-BinaryTools tool [args ...]
-```
-
-
 The following tools are provided. Click on a tool name to jump to its specific documentation.
 
 Tool  |Description
