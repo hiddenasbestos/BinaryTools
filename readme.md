@@ -11,17 +11,18 @@ Released under the MIT License.
 BinaryTools tool [args ...]
 ```
 
-Specify the tool to use followed by its specific arguments.
 
-The following tools are provided:
+The following tools are provided. Click on a tool name to jump to its specific documentation.
 
-* `pad` : Pad a file to a given size.
-* `zxtap` : Convert machine code into a ZX Spectrum .TAP file.
+Tool  |Description
+:---|:------------
+[pad](#pad) | Pad a file to a given size.
+[zxtap](#zxtap) | Convert machine code into a ZX Spectrum .TAP file.
 
 ---
 
 
-## pad
+##pad
 
 **Usage**
 ```
