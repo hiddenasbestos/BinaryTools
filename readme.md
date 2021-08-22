@@ -15,7 +15,7 @@ Specify the tool to use followed by its arguments. Only one tool can be used at 
 
 The following tools are provided.
 
-* pad
+* `pad` : Pad a file to a given size.
 
 -----
 
