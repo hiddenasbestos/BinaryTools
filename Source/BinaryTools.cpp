@@ -54,13 +54,13 @@ static Tool gTools[] =
 	{ "help", Help, "Show extended help for a specific tool. e.g. BinaryTools help pad", "tool-name", "Show help for a specific tool." },
 
 	{ "pad", Pad, "Pad a file to a given size.", "<file> size [fill]",
-	"  <file>   A binary file to pad. Caution: The file will be padded in-place.\n"
-	"           If the file doesn't exist, it will be created.\n\n"
-	"  size     The size to pad the file to. Supports the following suffixes: KB, MB\n"
-	"           or MBIT. If no suffix is specified, the size will be in bytes.\n"
-	"           Specify in hexadecimal using either 0x, & or $ prefix or h suffix.\n\n"
-	"  [fill]   Use this to specify a different byte value. Default is 0x00.\n"
-}
+		"  <file>   A binary file to pad. Caution: The file will be padded in-place.\n"
+		"           If the file doesn't exist, it will be created.\n\n"
+		"  size     The size to pad the file to. Supports the following suffixes: KB, MB\n"
+		"           or MBIT. If no suffix is specified, the size will be in bytes.\n"
+		"           Specify in hexadecimal using either 0x, & or $ prefix or h suffix.\n\n"
+		"  [fill]   Use this to specify a different byte value. Default is 0x00.\n"
+	}
 };
 
 // ... how many tools?
