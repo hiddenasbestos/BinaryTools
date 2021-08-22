@@ -21,8 +21,7 @@ The following tools are provided:
 ---
 
 
-pad
----
+## pad
 
 **Usage**
 ```
@@ -57,9 +56,9 @@ Create a new file 'new.bin' (assuming, for the purposes of this example, that th
 * Take care to make backups, or to use only on intermediate files, as the program will overwrite existing files without asking for confirmation.
 
 
-
-zxtap
 ---
+
+## zxtap
 
 **Usage**
 ```
