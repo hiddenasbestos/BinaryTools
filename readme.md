@@ -10,7 +10,7 @@ Released under the MIT License.
 ```
 USAGE: BinaryTools.exe tool [args ...]
 
-Specify the tool to use followed by its arguments. Only one tool can be used at a time.
+Specify the tool to use followed by its arguments.
 ```
 
 The following tools are provided.

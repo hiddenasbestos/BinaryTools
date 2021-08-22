@@ -95,7 +95,7 @@ static void printUsage()
 	printf( " USAGE: BinaryTools.exe tool [args ...]\n\n" );
 
 	// Files
-	printf( "Specify the tool to use followed by its arguments. Only one tool can be used.\n\n" );
+	printf( "Specify the tool to use followed by its arguments.\n\n" );
 
 	for ( int i = 0; i < gToolsCount; ++i )
 	{
