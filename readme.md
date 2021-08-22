@@ -6,18 +6,18 @@ A combined suite of utilities for manipulating binary data files.
 It was developed for use on Windows but might compile on other systems.
 Released under the MIT License.
 
-
+**Usage**
 ```
-USAGE: BinaryTools.exe tool [args ...]
-
-Specify the tool to use followed by its arguments.
+BinaryTools.exe tool [args ...]
 ```
 
-The following tools are provided.
+Specify the tool to use followed by its specific arguments.
+
+The following tools are provided:
 
 * `pad` : Pad a file to a given size.
 
------
+---
 
 
 pad
@@ -25,7 +25,7 @@ pad
 
 **Usage**
 ```
- > BinaryTools pad <file> size [fill]
+ BinaryTools pad <file> size [fill]
 
   <file>   A binary file to pad. Caution: The file will be padded in-place.
            If the file doesn't exist, it will be created.
@@ -49,11 +49,11 @@ Create a new file 'new.bin' (assuming, for the purposes of this example, that th
 
 **Notes**
 
-If the file already exceeds the padding size, only a minor error ("FAILED") will be reported.
+* If the file already exceeds the padding size, only a minor error ("FAILED") will be reported.
 
-If the file specified doesn't exist, 
+* If the file specified doesn't exist, it will be created.
 
-Take care to make backups, or to use only on intermediate files, as the program will overwrite existing files without asking for confirmation.
+* Take care to make backups, or to use only on intermediate files, as the program will overwrite existing files without asking for confirmation.
 
 
 
