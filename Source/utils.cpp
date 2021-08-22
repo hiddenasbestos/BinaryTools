@@ -142,7 +142,7 @@ int64_t ParseSizeWithSuffix( const char* pStr )
 }
 
 //------------------------------------------------------------------------------
-// ParseByteVal
+// ParseValue
 //------------------------------------------------------------------------------
 int ParseValue( const char* pStr, int iLimit )
 {
@@ -213,7 +213,7 @@ int ParseValue( const char* pStr, int iLimit )
 void TestParsingSizes()
 {
 	Print80ColRuler();
-	printf( "Test function to develop/debug ParseWithSizeSuffix function." );
+	printf( "Test function to develop/debug ParseWithSizeSuffix function.\n" );
 
 	for ( ; ; )
 	{

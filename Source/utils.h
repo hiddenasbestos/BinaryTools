@@ -34,20 +34,24 @@ SOFTWARE.
 // Detect a hex prefix and return a character offset after it. Zero if not found.
 int DetectHexPrefix( const char* pStr );
 
+// Helper to fit, for example, usage text within 80 columns
 void Print80ColRuler();
 
+// Print all of the command line arguments with thier index.
 void DebugCmdArgs( int argc, char** argv );
 
 // Parse a string, detecting a size suffix (KB, MBIT, etc.) and return a byte amount.
-// Supported hexadecimal mode. Returns -1 on invalid number.
+// Supports hexadecimal mode. Returns -1 on invalid number.
 int64_t ParseSizeWithSuffix( const char* pStr );
 
-// Parse a simple value, supports hexadecimal
+// Parse a positive integer value, supports hexadecimal.
 // Returns -1 on invalid number.
 int ParseValue( const char* pStr, int iLimit );
 
+// Testing for ParseSizeWithSuffix
 void TestParsingSizes();
 
+// Print help for a specific tool.
 // NOTE: This function is implemented in BinaryTools.cpp
 void PrintHelp( const char* pName );
 
