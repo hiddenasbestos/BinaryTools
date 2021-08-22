@@ -9,10 +9,15 @@ It was develpoed for use on Windows but might compile on other systems.
 ```
 USAGE: BinaryTools.exe tool [args ...]
 
-Specify the tool to use followed by its arguments. Only one tool can be used.
+Specify the tool to use followed by its arguments. Only one tool can be used at a time.
 ```
 
 The following tools are provided.
+
+* pad
+
+-----
+
 
 pad
 ---
