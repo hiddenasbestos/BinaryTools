@@ -59,7 +59,7 @@ Create a new file 'new.bin' (assuming, for the purposes of this example, that th
 
 ---
 
-## zxtap
+##zxtap
 
 **Usage**
 ```
