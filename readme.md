@@ -16,6 +16,7 @@ Specify the tool to use followed by its specific arguments.
 The following tools are provided:
 
 * `pad` : Pad a file to a given size.
+* `zxtap` : Convert machine code into a ZX Spectrum .TAP file.
 
 ---
 
@@ -54,6 +55,38 @@ Create a new file 'new.bin' (assuming, for the purposes of this example, that th
 * If the file specified doesn't exist, it will be created.
 
 * Take care to make backups, or to use only on intermediate files, as the program will overwrite existing files without asking for confirmation.
+
+
+
+zxtap
+---
+
+**Usage**
+```
+BinaryTools zxtap <bin-file> name org-addr <tap-file>
+
+  <bin-file>   A machine code file to process.
+
+  name         The file name of the CODE block, up to 10 characters.
+
+  org-addr     Base address in memory where the data will be loaded to. Specify
+               in hexadecimal using either 0x, & or $ prefix or h suffix.
+
+  <tap-file>   The output .TAP file containing a CODE block.
+```
+
+**Examples**
+
+```> BinaryTools zxtap hello.bin HELLO 0x8000 hello.tap```
+
+Create a .TAP file for a code block called "HELLO" which will load into memory starting at address 32768. 
+
+**Notes**
+
+* Make sure the origin address matches the `org` value used in your assembler, or absolute addresses will be invalid.
+
+* Load this data from BASIC using the command `LOAD "" CODE`
+
 
 
 

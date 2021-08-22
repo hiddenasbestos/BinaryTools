@@ -47,6 +47,7 @@ struct Tool
 // ... add to this list as new tools are created.
 extern void Help( int argc, char** argv );
 extern void Pad( int argc, char** argv );
+extern void ZXTap( int argc, char** argv );
 
 // ... register the tools
 static Tool gTools[] =
@@ -62,6 +63,14 @@ static Tool gTools[] =
 		"           Specify in hexadecimal using either 0x, & or $ prefix or h suffix.\n\n"
 		"  [fill]   Use this to specify a different byte value. Default is 0x00.\n"
 	},
+
+	{
+		"zxtap", ZXTap, "Convert machine code into a ZX Spectrum .TAP file.", "<bin-file> name org-addr <tap-file>",
+		"  <bin-file>   A machine code file to process.\n\n"
+		"  name         The file name of the CODE block, up to 10 characters.\n\n"
+		"  org-addr     Base address in memory where the data will be loaded to. Specify\n"
+		"               in hexadecimal using either 0x, & or $ prefix or h suffix.\n\n"
+		"  <tap-file>   The output .TAP file containing a CODE block.\n\n"
 	}
 };
 
@@ -94,7 +103,7 @@ static int findTool( const char* pName )
 static void printUsage()
 {
 	// Usage
-	printf( " USAGE: BinaryTools.exe tool [args ...]\n\n" );
+	printf( " USAGE: BinaryTools tool [args ...]\n\n" );
 
 	// Files
 	printf( "Specify the tool to use followed by its arguments.\n\n" );
@@ -131,7 +140,7 @@ void PrintHelp( const char* pName )
 		const Tool& tool = gTools[ iTool ];
 
 		// Usage
-		printf( " USAGE: BinaryTools.exe %s %s\n\n%s\n", pName, tool.pHelpArgs, tool.pHelpDesc );
+		printf( " USAGE: BinaryTools %s %s\n\n%s\n", pName, tool.pHelpArgs, tool.pHelpDesc );
 	}
 }
 
@@ -176,6 +185,11 @@ int main( int argc, char** argv )
 
 	// Call it!
 	tool.pFunction( argc, argv );
+
+#ifdef _DEBUG
+	printf( "\nFinished. Press Enter... " );
+	getchar();
+#endif
 
 	// Done
 	return 0;

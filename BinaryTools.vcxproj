@@ -14,6 +14,7 @@
     <ClCompile Include="Source\BinaryTools.cpp" />
     <ClCompile Include="Source\pad.cpp" />
     <ClCompile Include="Source\utils.cpp" />
+    <ClCompile Include="Source\zxtap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\utils.h" />
