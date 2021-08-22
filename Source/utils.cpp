@@ -80,7 +80,7 @@ int64_t ParseSizeWithSuffix( const char* pStr )
 	int iHexOffset;
 	iHexOffset = DetectHexPrefix( pStr );
 
-	int64_t iSize; 
+	int64_t iSize;
 	char* pNumberEnd;
 
 	errno = 0;
@@ -199,12 +199,12 @@ int ParseValue( const char* pStr, int iLimit )
 	}
 
 	// too big?
-	if ( iSize > static_cast< int64_t>( iLimit ) )
+	if ( iSize > static_cast<int64_t>( iLimit ) )
 	{
 		return -1;
 	}
 
-	return static_cast< int >( iSize );
+	return static_cast<int>( iSize );
 }
 
 //------------------------------------------------------------------------------

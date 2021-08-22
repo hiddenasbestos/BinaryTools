@@ -37,9 +37,9 @@ typedef void ( *fnTool )( int argc, char** argv );
 
 struct Tool
 {
-    const char* pName;
-    fnTool pFunction;
-    const char* pDescription;
+	const char* pName;
+	fnTool pFunction;
+	const char* pDescription;
 	const char* pHelpArgs;
 	const char* pHelpDesc;
 };
@@ -51,15 +51,15 @@ extern void Pad( int argc, char** argv );
 // ... register the tools
 static Tool gTools[] =
 {
-    { "help", Help, "Provided extended help for a specific tool. e.g. BinaryTools help pad", "tool-name", "Show help for a specific tool." },
-    
-    { "pad", Pad, "Pad a file to a given size.", "<file> size [fill]", 
-        "  <file>   A binary file to pad. Caution: The file will be padded in-place.\n"
-        "           If the file doesn't exist, it will be created.\n\n"
-        "  size     The size to pad the file to. Supports the following suffixes: KB, MB\n"
-        "           or MBIT. If no suffix is specified, the size will be in bytes.\n"
-        "           Specify in hexadecimal using either 0x, & or $ prefix or h suffix.\n\n"
-        "  [fill]   Use this to specify a different byte value. Default is 0x00.\n"
+	{ "help", Help, "Provided extended help for a specific tool. e.g. BinaryTools help pad", "tool-name", "Show help for a specific tool." },
+
+	{ "pad", Pad, "Pad a file to a given size.", "<file> size [fill]",
+	"  <file>   A binary file to pad. Caution: The file will be padded in-place.\n"
+	"           If the file doesn't exist, it will be created.\n\n"
+	"  size     The size to pad the file to. Supports the following suffixes: KB, MB\n"
+	"           or MBIT. If no suffix is specified, the size will be in bytes.\n"
+	"           Specify in hexadecimal using either 0x, & or $ prefix or h suffix.\n\n"
+	"  [fill]   Use this to specify a different byte value. Default is 0x00.\n"
 }
 };
 
@@ -73,20 +73,20 @@ static int gToolsCount = sizeof( gTools ) / sizeof( Tool );
 
 static int findTool( const char* pName )
 {
-    for ( int i = 0; i < gToolsCount; ++i )
-    {
+	for ( int i = 0; i < gToolsCount; ++i )
+	{
 		// Alias the tool
 		const Tool& tool = gTools[ i ];
 
-        // Match?
-        if ( _strcmpi( pName, tool.pName ) == 0 )
-        {
-            return i;
-        }
-    }
+		// Match?
+		if ( _strcmpi( pName, tool.pName ) == 0 )
+		{
+			return i;
+		}
+	}
 
-    // Not found.
-    return -1;
+	// Not found.
+	return -1;
 }
 
 static void printUsage()
@@ -97,16 +97,16 @@ static void printUsage()
 	// Files
 	printf( "Specify the tool to use followed by its arguments. Only one tool can be used.\n\n" );
 
-    for ( int i = 0; i < gToolsCount; ++i )
-    {
-        // Alias the tool
-        const Tool& tool = gTools[ i ];
+	for ( int i = 0; i < gToolsCount; ++i )
+	{
+		// Alias the tool
+		const Tool& tool = gTools[ i ];
 
-        // List it.
-        printf( "    %-12s : %s\n", tool.pName, tool.pDescription );
-    }
+		// List it.
+		printf( "    %-12s : %s\n", tool.pName, tool.pDescription );
+	}
 
-    printf( "\n" );
+	printf( "\n" );
 }
 
 void PrintHelp( const char* pName )
@@ -114,8 +114,8 @@ void PrintHelp( const char* pName )
 #ifdef _DEBUG
 	Print80ColRuler();
 #endif // _DEBUG
-	
-    int iTool = findTool( pName );
+
+	int iTool = findTool( pName );
 
 	if ( iTool < 0 )
 	{
@@ -138,11 +138,11 @@ static void Help( int argc, char** argv )
 	if ( argc <= 2 )
 	{
 		printUsage();
-        return;
+		return;
 	}
 
 	char* pName = argv[ 2 ];
-    PrintHelp( pName );
+	PrintHelp( pName );
 }
 
 //==============================================================================
@@ -152,31 +152,31 @@ static void Help( int argc, char** argv )
 //------------------------------------------------------------------------------
 int main( int argc, char** argv )
 {
-    if ( argc < 2 )
-    {
-        printUsage();
-        return 0;
-    }
+	if ( argc < 2 )
+	{
+		printUsage();
+		return 0;
+	}
 
 	char* pName = argv[ 1 ];
 	int iTool = findTool( pName );
 
-    if ( iTool < 0 )
-    {
+	if ( iTool < 0 )
+	{
 		printf( "ERROR: Unknown tool \"%s\".\n\n", pName );
 
 		printUsage();
 		return 0;
-    }
+	}
 
 	// Alias the tool
 	const Tool& tool = gTools[ iTool ];
 
-    // Call it!
-    tool.pFunction( argc, argv );
+	// Call it!
+	tool.pFunction( argc, argv );
 
-    // Done
-    return 0;
+	// Done
+	return 0;
 }
 
 //==============================================================================
