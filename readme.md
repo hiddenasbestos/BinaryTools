@@ -8,7 +8,7 @@ Released under the MIT License.
 
 **Usage**
 ```
-BinaryTools.exe tool [args ...]
+BinaryTools tool [args ...]
 ```
 
 Specify the tool to use followed by its specific arguments.
