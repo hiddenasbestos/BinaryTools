@@ -51,7 +51,7 @@ extern void Pad( int argc, char** argv );
 // ... register the tools
 static Tool gTools[] =
 {
-	{ "help", Help, "Provided extended help for a specific tool. e.g. BinaryTools help pad", "tool-name", "Show help for a specific tool." },
+	{ "help", Help, "Show extended help for a specific tool. e.g. BinaryTools help pad", "tool-name", "Show help for a specific tool." },
 
 	{ "pad", Pad, "Pad a file to a given size.", "<file> size [fill]",
 	"  <file>   A binary file to pad. Caution: The file will be padded in-place.\n"
