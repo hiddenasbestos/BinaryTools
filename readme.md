@@ -3,7 +3,8 @@ BinaryTools
 -----------
 
 A combined suite of utilities for manipulating binary data files.
-It was develpoed for use on Windows but might compile on other systems.
+It was developed for use on Windows but might compile on other systems.
+Released under the MIT License.
 
 
 ```
