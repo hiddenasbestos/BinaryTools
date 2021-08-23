@@ -19,6 +19,8 @@ Tool  |Description
 
 ## join
 
+Join multiple files into a separate output.
+
 **Usage**
 ```
  BinaryTools join <file> [<file> ...] <output>
@@ -45,6 +47,8 @@ Copies files 'alpha.bin', 'beta.bin' and 'gamma.bin' into output 'omega.bin' in 
 ---
 
 ## pad
+
+Pad a file to a given size.
 
 **Usage**
 ```
@@ -82,6 +86,8 @@ Create a new file 'new.bin' (assuming, for the purposes of this example, that th
 ---
 
 ## zxtap
+
+Convert machine code into a ZX Spectrum .TAP file.
 
 **Usage**
 ```
