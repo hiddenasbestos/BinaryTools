@@ -10,11 +10,39 @@ The following tools are provided. Click on a tool name to jump to its specific d
 
 Tool  |Description
 :---|:------------
+[join](#join) | Join multiple files into a separate output.
 [pad](#pad) | Pad a file to a given size.
 [zxtap](#zxtap) | Convert machine code into a ZX Spectrum .TAP file.
 
+
 ---
 
+## join
+
+**Usage**
+```
+ BinaryTools join <file> [<file> ...] <output>
+
+  <file>    An input file to read. Multiple files can be specified.
+
+  <output>  The output. Contains all input files in the order given.
+            Caution: The output will be overwritten without confirmation.
+```
+
+**Examples**
+
+```> BinaryTools join alpha.bin beta.bin gamma.bin omega.bin```
+
+Copies files 'alpha.bin', 'beta.bin' and 'gamma.bin' into output 'omega.bin' in that order.
+
+**Notes**
+
+* Specify only one input file to perform a copy.
+
+* Take care to make backups, or to use only on intermediate files, as the program will overwrite the output without asking for confirmation.
+
+
+---
 
 ## pad
 
@@ -29,7 +57,7 @@ Tool  |Description
            or MBIT. If no suffix is specified, the size will be in bytes.
            Specify in hexadecimal using either 0x, & or $ prefix, or h suffix
 
-  [fill]   Use this to specify a different byte value. Default is 0x00.
+  [fill]   Optional. Use this to specify a different byte value. Default is 0x00.
 ```
 
 **Examples**
@@ -40,7 +68,7 @@ Extend a file 'data.rom' to 32KB with zeros.
 
 ```> BinaryTools pad new.bin 1mbit 0xFF```
 
-Create a new file 'new.bin' (assuming, for the purposes of this example, that this file didn't exist already) of 1MBIT (128KB) in size, filling the space with the hex value FF (255).
+Create a new file 'new.bin' (assuming, for the purposes of this example, that this file didn't exist already) with one mega power (128KB), filling the whole space with the hex value FF (255).
 
 **Notes**
 

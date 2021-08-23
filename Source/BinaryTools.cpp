@@ -46,6 +46,7 @@ struct Tool
 
 // ... add to this list as new tools are created.
 extern void Help( int argc, char** argv );
+extern void Join( int argc, char** argv );
 extern void Pad( int argc, char** argv );
 extern void ZXTap( int argc, char** argv );
 
@@ -53,6 +54,15 @@ extern void ZXTap( int argc, char** argv );
 static Tool gTools[] =
 {
 	{ "help", Help, "Show extended help for a specific tool. e.g. BinaryTools help pad", "tool-name", "Show help for a specific tool." },
+
+	//-----------------
+
+	{
+		"join", Join, "Join multiple files into a separate output.", "<file> [<file> ...] <output>",
+		"  <file>    An input file to read. Multiple files can be specified.\n\n"
+		"  <output>  The output. Contains all input files in the order given.\n"
+		"            Caution: The output will be overwritten without confirmation.\n"
+	},
 
 	{
 		"pad", Pad, "Pad a file to a given size.", "<file> size [fill]",
@@ -70,7 +80,7 @@ static Tool gTools[] =
 		"  name         The file name of the CODE block, up to 10 characters.\n\n"
 		"  org-addr     Base address in memory where the data will be loaded to. Specify\n"
 		"               in hexadecimal using either 0x, & or $ prefix or h suffix.\n\n"
-		"  <tap-file>   The output .TAP file containing a CODE block.\n\n"
+		"  <tap-file>   The output .TAP file containing a CODE block.\n"
 	}
 };
 
@@ -103,7 +113,7 @@ static int findTool( const char* pName )
 static void printUsage()
 {
 	// Usage
-	printf( " USAGE: BinaryTools tool [args ...]\n\n" );
+	printf( "USAGE: BinaryTools tool [args ...]\n\n" );
 
 	// Files
 	printf( "Specify the tool to use followed by its arguments.\n\n" );
@@ -115,9 +125,13 @@ static void printUsage()
 
 		// List it.
 		printf( "    %-12s : %s\n", tool.pName, tool.pDescription );
-	}
 
-	printf( "\n" );
+		// formatting
+		if ( i == 0 )
+		{
+			putchar( '\n' );
+		}
+	}
 }
 
 void PrintHelp( const char* pName )
@@ -140,7 +154,7 @@ void PrintHelp( const char* pName )
 		const Tool& tool = gTools[ iTool ];
 
 		// Usage
-		printf( " USAGE: BinaryTools %s %s\n\n%s\n", pName, tool.pHelpArgs, tool.pHelpDesc );
+		printf( "\n%s\n\nUSAGE: BinaryTools %s %s\n\n%s\n", tool.pDescription, pName, tool.pHelpArgs, tool.pHelpDesc );
 	}
 }
 
