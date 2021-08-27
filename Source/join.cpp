@@ -52,7 +52,14 @@ int Join( int argc, char** argv )
 		return 1;
 	}
 
-	Info( "Joining %d files. Writing \"%s\" ... ", argc - 3, pOutputName );
+	if ( argc - 3 == 1 )
+	{
+		Info( "Copying \"%s\" to \"%s\" ... ", argv[ 2 ], pOutputName );
+	}
+	else
+	{
+		Info( "Joining %d files. Writing \"%s\" ... ", argc - 3, pOutputName );
+	}
 
 	// ... all inputs
 	for ( int arg = 2; arg < argc - 1; ++arg )
