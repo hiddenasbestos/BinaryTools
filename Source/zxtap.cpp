@@ -85,8 +85,8 @@ int ZXTap( int argc, char** argv )
 	//
 	// -- Write Header
 
-	printf( "[BinaryTools] ZXTAP. CODE block \"%s\", %d bytes at 0x%04X\n", pCodeName, iSourceSize, iOrigin );
-	printf( "[BinaryTools] Writing \"%s\" ... ", argv[ 5 ] );
+	Info( "Creating CODE block \"%s\", %d bytes at 0x%04X\n", pCodeName, iSourceSize, iOrigin );
+	Info( "Writing \"%s\" ... ", argv[ 5 ] );
 
 	uint8_t checkbit;
 

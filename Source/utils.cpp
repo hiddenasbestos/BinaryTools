@@ -258,3 +258,29 @@ void PrintError( const char* pName, ... )
 
 	printf( " ERROR: %s\n", buffer );
 }
+
+//------------------------------------------------------------------------------
+// Info
+//------------------------------------------------------------------------------
+void Info( const char* pName, ... )
+{
+	char buffer[ 2048 ];
+
+	int count;
+
+	va_list	vl;
+	va_start( vl, pName );
+	count = vsprintf_s( buffer, sizeof( buffer ), pName, vl );
+	va_end( vl );
+
+	if ( gpActiveToolName )
+	{
+		printf( "%s:", gpActiveToolName );
+	}
+	else
+	{
+		printf( "BinaryTools: " );
+	}
+
+	printf( " %s", buffer );
+}

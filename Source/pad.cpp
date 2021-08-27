@@ -93,11 +93,11 @@ int Pad( int argc, char** argv )
 	// Say hello
 	if ( bNewFile )
 	{
-		printf( "[BinaryTools] Creating \"%s\" with %lld bytes of 0x%02X ... ", pFile, iNewSize, iFillByte );
+		Info( "Creating \"%s\" with %lld bytes of 0x%02X ... ", pFile, iNewSize, iFillByte );
 	}
 	else
 	{
-		printf( "[BinaryTools] Padding \"%s\" to %lld bytes with 0x%02X ... ", pFile, iNewSize, iFillByte );
+		Info( "Padding \"%s\" to %lld bytes with 0x%02X ... ", pFile, iNewSize, iFillByte );
 	}
 
 	// Pad !

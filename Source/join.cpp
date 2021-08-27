@@ -52,7 +52,7 @@ int Join( int argc, char** argv )
 		return 1;
 	}
 
-	printf( "[BinaryTools] Joining %d files. Writing \"%s\" ... ", argc - 3, pOutputName );
+	Info( "Joining %d files. Writing \"%s\" ... ", argc - 3, pOutputName );
 
 	// ... all inputs
 	for ( int arg = 2; arg < argc - 1; ++arg )
