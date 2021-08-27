@@ -110,6 +110,14 @@ static int findTool( const char* pName )
 	return -1;
 }
 
+static void printHello()
+{
+	printf( "\n------------------------------------------------------------------\n"
+			" BinaryTools Utility Collection\n"
+			" Copyright (c) 2021, by David Walters. See LICENSE for details.\n"
+			"------------------------------------------------------------------\n\n" );
+}
+
 static void printUsage()
 {
 	// Usage
@@ -162,6 +170,7 @@ static void Help( int argc, char** argv )
 {
 	if ( argc <= 2 )
 	{
+		printHello();
 		printUsage();
 		return;
 	}
@@ -179,26 +188,30 @@ int main( int argc, char** argv )
 {
 	if ( argc < 2 )
 	{
+		printHello();
 		printUsage();
-		return 0;
 	}
-
-	char* pName = argv[ 1 ];
-	int iTool = findTool( pName );
-
-	if ( iTool < 0 )
+	else
 	{
-		printf( "ERROR: Unknown tool \"%s\".\n\n", pName );
+		char* pName = argv[ 1 ];
+		int iTool = findTool( pName );
 
-		printUsage();
-		return 0;
+		if ( iTool < 0 )
+		{
+			printf( "ERROR: Unknown tool \"%s\".\n\n", pName );
+
+			printHello();
+			printUsage();
+		}
+		else
+		{
+			// Alias the tool
+			const Tool& tool = gTools[ iTool ];
+
+			// Call it!
+			tool.pFunction( argc, argv );
+		}
 	}
-
-	// Alias the tool
-	const Tool& tool = gTools[ iTool ];
-
-	// Call it!
-	tool.pFunction( argc, argv );
 
 #ifdef _DEBUG
 	printf( "\nFinished. Press Enter... " );
