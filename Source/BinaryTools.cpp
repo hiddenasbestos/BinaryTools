@@ -89,6 +89,13 @@ static int gToolsCount = sizeof( gTools ) / sizeof( Tool );
 
 
 //------------------------------------------------------------------------------
+// Global Data
+//------------------------------------------------------------------------------
+
+const char* gpActiveToolName = nullptr;
+
+
+//------------------------------------------------------------------------------
 // Local Functions
 //------------------------------------------------------------------------------
 
@@ -152,7 +159,7 @@ void PrintHelp( const char* pName )
 
 	if ( iTool < 0 )
 	{
-		printf( "ERROR: Unknown tool \"%s\". Cannot display help.\n\n", pName );
+		PrintError( "Unknown tool \"%s\". Cannot display help.", pName );
 		printUsage();
 		return;
 	}
@@ -202,7 +209,7 @@ int main( int argc, char** argv )
 
 		if ( iTool < 0 )
 		{
-			printf( "ERROR: Unknown tool \"%s\".\n\n", pName );
+			PrintError( "Unknown tool \"%s\".", pName );
 
 			printHello();
 			printUsage();
@@ -211,6 +218,9 @@ int main( int argc, char** argv )
 		{
 			// Alias the tool
 			const Tool& tool = gTools[ iTool ];
+
+			// Store the name
+			gpActiveToolName = tool.pName;
 
 			// Call it!
 			iReturnCode = tool.pFunction( argc, argv );

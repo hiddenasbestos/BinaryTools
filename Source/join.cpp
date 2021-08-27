@@ -48,7 +48,7 @@ int Join( int argc, char** argv )
 	err = fopen_s( &fp_out, pOutputName, "wb" );
 	if ( err != 0 || fp_out == nullptr )
 	{
-		printf( "ERROR: Cannot open output file \"%s\"\n\n", pOutputName );
+		PrintError( "Cannot open output file \"%s\"", pOutputName );
 		return 1;
 	}
 
@@ -63,7 +63,8 @@ int Join( int argc, char** argv )
 		err = fopen_s( &fp_in, pInputName, "rb" );
 		if ( err != 0 || fp_in == nullptr )
 		{
-			printf( "FAILED\nERROR: Cannot open input file \"%s\"\n\n", pInputName );
+			printf( "FAILED\n" );
+			PrintError( "Cannot open input file \"%s\"", pInputName );
 			fclose( fp_out );
 			return 1;
 		}

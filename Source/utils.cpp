@@ -28,8 +28,13 @@ SOFTWARE.
 #include <errno.h>
 #include <cstring>
 #include <cstdint>
+#include <stdarg.h>
 
 #include "utils.h"
+
+// from BinaryTools.cpp
+extern const char* gpActiveToolName;
+
 
 //------------------------------------------------------------------------------
 // DetectHexPrefix
@@ -226,4 +231,30 @@ void TestParsingSizes()
 
 		printf( "val = %lld\n", val );
 	}
+}
+
+//------------------------------------------------------------------------------
+// PrintError
+//------------------------------------------------------------------------------
+void PrintError( const char* pName, ... )
+{
+	char buffer[ 2048 ];
+
+	int count;
+
+	va_list	vl;
+	va_start( vl, pName );
+	count = vsprintf_s( buffer, sizeof( buffer ), pName, vl );
+	va_end( vl );
+
+	if ( gpActiveToolName )
+	{
+		printf( "%s:", gpActiveToolName );
+	}
+	else
+	{
+		printf( "BinaryTools: " );
+	}
+
+	printf( " ERROR: %s\n", buffer );
 }

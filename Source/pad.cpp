@@ -49,7 +49,7 @@ int Pad( int argc, char** argv )
 
 		if ( iFillByte < 0 )
 		{
-			printf( "ERROR: Invalid fill byte value \"%s\"\n\n", pFill );
+			PrintError( "Invalid fill byte value \"%s\"", pFill );
 			return 1;
 		}
 	}
@@ -58,7 +58,7 @@ int Pad( int argc, char** argv )
 	int64_t iNewSize = ParseSizeWithSuffix( pSize );
 	if ( iNewSize < 0 )
 	{
-		printf( "ERROR: Invalid size \"%s\"\n\n", pSize );
+		PrintError( "Invalid size \"%s\"", pSize );
 		PrintHelp( "pad" );
 		return 1;
 	}
@@ -82,7 +82,7 @@ int Pad( int argc, char** argv )
 	err = fopen_s( &fp, pFile, "ab" );
 	if ( err != 0 || fp == nullptr )
 	{
-		printf( "ERROR: Failed to open file \"%s\" for writing.\n\n", pFile );
+		PrintError( "Failed to open file \"%s\" for writing.", pFile );
 		return 1;
 	}
 

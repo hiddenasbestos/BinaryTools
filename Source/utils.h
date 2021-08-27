@@ -55,4 +55,7 @@ void TestParsingSizes();
 // NOTE: This function is implemented in BinaryTools.cpp
 void PrintHelp( const char* pName );
 
+// Print a standard error message to stdout
+void PrintError( const char* pName, ... );
+
 //==============================================================================

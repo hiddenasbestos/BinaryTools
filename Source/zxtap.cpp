@@ -41,9 +41,10 @@ int ZXTap( int argc, char** argv )
 
 	// ... code name
 	const char* pCodeName = argv[ 3 ];
-	if ( strlen( pCodeName ) > 10 )
+	size_t iCodeNameLength = strlen( pCodeName );
+	if ( iCodeNameLength > 10 )
 	{
-		printf( "ERROR: Code name is too long. Must be 10 characters or less.\n\n" );
+		PrintError( "Code name \"%s\" is too long (%d). Must be 10 characters or less.", pCodeName, (int)iCodeNameLength );
 		return 1;
 	}
 
@@ -51,7 +52,7 @@ int ZXTap( int argc, char** argv )
 	int iOrigin = ParseValue( argv[ 4 ], 65535 );
 	if ( iOrigin < 0 )
 	{
-		printf( "ERROR: Invalid origin address \"%s\"\n\n", argv[ 4 ] );
+		PrintError( "Invalid origin address \"%s\".", argv[ 4 ] );
 		return 1;
 	}
 
@@ -63,7 +64,7 @@ int ZXTap( int argc, char** argv )
 	err = fopen_s( &fp_in, argv[ 2 ], "rb" );
 	if ( err != 0 || fp_in == nullptr )
 	{
-		printf( "ERROR: Cannot open input file \"%s\"\n\n", argv[ 2 ] );
+		PrintError( "Cannot open input file \"%s\".", argv[ 2 ] );
 		return 1;
 	}
 
@@ -76,7 +77,7 @@ int ZXTap( int argc, char** argv )
 	err = fopen_s( &fp_out, argv[ 5 ], "wb" );
 	if ( err != 0 || fp_in == nullptr )
 	{
-		printf( "ERROR: Cannot open output file \"%s\"\n\n", argv[ 5 ] );
+		PrintError( "Cannot open output file \"%s\".", argv[ 5 ] );
 		return 1;
 	}
 
