@@ -31,12 +31,12 @@ SOFTWARE.
 //------------------------------------------------------------------------------
 // ZXTap
 //------------------------------------------------------------------------------
-void ZXTap( int argc, char** argv )
+int ZXTap( int argc, char** argv )
 {
 	if ( argc != 6 )
 	{
 		PrintHelp( "zxtap" );
-		return;
+		return 1;
 	}
 
 	// ... code name
@@ -44,7 +44,7 @@ void ZXTap( int argc, char** argv )
 	if ( strlen( pCodeName ) > 10 )
 	{
 		printf( "ERROR: Code name is too long. Must be 10 characters or less.\n\n" );
-		return;
+		return 1;
 	}
 
 	// ... origin address
@@ -52,7 +52,7 @@ void ZXTap( int argc, char** argv )
 	if ( iOrigin < 0 )
 	{
 		printf( "ERROR: Invalid origin address \"%s\"\n\n", argv[ 4 ] );
-		return;
+		return 1;
 	}
 
 	int err;
@@ -64,7 +64,7 @@ void ZXTap( int argc, char** argv )
 	if ( err != 0 || fp_in == nullptr )
 	{
 		printf( "ERROR: Cannot open input file \"%s\"\n\n", argv[ 2 ] );
-		return;
+		return 1;
 	}
 
 	// ... measure the source size.
@@ -77,7 +77,7 @@ void ZXTap( int argc, char** argv )
 	if ( err != 0 || fp_in == nullptr )
 	{
 		printf( "ERROR: Cannot open output file \"%s\"\n\n", argv[ 5 ] );
-		return;
+		return 1;
 	}
 
 
@@ -173,6 +173,8 @@ void ZXTap( int argc, char** argv )
 	// tidy up.
 	fclose( fp_in );
 	fclose( fp_out );
+
+	return 0;
 }
 
 //==============================================================================

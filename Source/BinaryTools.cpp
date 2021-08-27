@@ -33,7 +33,7 @@ SOFTWARE.
 // Tool Declarations
 //------------------------------------------------------------------------------
 
-typedef void ( *fnTool )( int argc, char** argv );
+typedef int ( *fnTool )( int argc, char** argv );
 
 struct Tool
 {
@@ -45,10 +45,10 @@ struct Tool
 };
 
 // ... add to this list as new tools are created.
-extern void Help( int argc, char** argv );
-extern void Join( int argc, char** argv );
-extern void Pad( int argc, char** argv );
-extern void ZXTap( int argc, char** argv );
+extern int Help( int argc, char** argv );
+extern int Join( int argc, char** argv );
+extern int Pad( int argc, char** argv );
+extern int ZXTap( int argc, char** argv );
 
 // ... register the tools
 static Tool gTools[] =
@@ -166,17 +166,19 @@ void PrintHelp( const char* pName )
 	}
 }
 
-static void Help( int argc, char** argv )
+static int Help( int argc, char** argv )
 {
 	if ( argc <= 2 )
 	{
 		printHello();
 		printUsage();
-		return;
+		return 0;
 	}
 
 	char* pName = argv[ 2 ];
 	PrintHelp( pName );
+
+	return 0;
 }
 
 //==============================================================================
@@ -186,6 +188,8 @@ static void Help( int argc, char** argv )
 //------------------------------------------------------------------------------
 int main( int argc, char** argv )
 {
+	int iReturnCode = 0;
+
 	if ( argc < 2 )
 	{
 		printHello();
@@ -209,7 +213,7 @@ int main( int argc, char** argv )
 			const Tool& tool = gTools[ iTool ];
 
 			// Call it!
-			tool.pFunction( argc, argv );
+			iReturnCode = tool.pFunction( argc, argv );
 		}
 	}
 
@@ -219,7 +223,7 @@ int main( int argc, char** argv )
 #endif
 
 	// Done
-	return 0;
+	return iReturnCode;
 }
 
 //==============================================================================

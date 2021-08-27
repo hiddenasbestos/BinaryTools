@@ -30,12 +30,12 @@ SOFTWARE.
 //------------------------------------------------------------------------------
 // Pad
 //------------------------------------------------------------------------------
-void Pad( int argc, char** argv )
+int Pad( int argc, char** argv )
 {
 	if ( argc < 4 || argc > 5 )
 	{
 		PrintHelp( "pad" );
-		return;
+		return 1;
 	}
 
 	const char* pFile = argv[ 2 ];
@@ -50,7 +50,7 @@ void Pad( int argc, char** argv )
 		if ( iFillByte < 0 )
 		{
 			printf( "ERROR: Invalid fill byte value \"%s\"\n\n", pFill );
-			return;
+			return 1;
 		}
 	}
 
@@ -60,7 +60,7 @@ void Pad( int argc, char** argv )
 	{
 		printf( "ERROR: Invalid size \"%s\"\n\n", pSize );
 		PrintHelp( "pad" );
-		return;
+		return 1;
 	}
 
 	int err;
@@ -83,7 +83,7 @@ void Pad( int argc, char** argv )
 	if ( err != 0 || fp == nullptr )
 	{
 		printf( "ERROR: Failed to open file \"%s\" for writing.\n\n", pFile );
-		return;
+		return 1;
 	}
 
 	// ... seek to the end and measure.
@@ -123,6 +123,8 @@ void Pad( int argc, char** argv )
 	}
 
 	fclose( fp );
+
+	return 0;
 }
 
 //==============================================================================

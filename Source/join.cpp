@@ -31,12 +31,12 @@ SOFTWARE.
 //------------------------------------------------------------------------------
 // Join
 //------------------------------------------------------------------------------
-void Join( int argc, char** argv )
+int Join( int argc, char** argv )
 {
 	if ( argc < 5 )
 	{
 		PrintHelp( "join" );
-		return;
+		return 1;
 	}
 
 	const char* pOutputName = argv[ argc - 1 ];
@@ -49,7 +49,7 @@ void Join( int argc, char** argv )
 	if ( err != 0 || fp_out == nullptr )
 	{
 		printf( "ERROR: Cannot open output file \"%s\"\n\n", pOutputName );
-		return;
+		return 1;
 	}
 
 	printf( "[BinaryTools] Joining %d files. Writing \"%s\" ... ", argc - 3, pOutputName );
@@ -65,7 +65,7 @@ void Join( int argc, char** argv )
 		{
 			printf( "FAILED\nERROR: Cannot open input file \"%s\"\n\n", pInputName );
 			fclose( fp_out );
-			return;
+			return 1;
 		}
 		else
 		{
@@ -87,6 +87,8 @@ void Join( int argc, char** argv )
 	// Tidy up
 	printf( "OK\n" );
 	fclose( fp_out );
+
+	return 0;
 }
 
 //==============================================================================
