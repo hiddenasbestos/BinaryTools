@@ -33,7 +33,7 @@ SOFTWARE.
 //------------------------------------------------------------------------------
 int Join( int argc, char** argv )
 {
-	if ( argc < 5 )
+	if ( argc < 4 )
 	{
 		PrintHelp( "join" );
 		return 1;
