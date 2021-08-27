@@ -253,7 +253,7 @@ void PrintError( const char* pName, ... )
 	}
 	else
 	{
-		printf( "BinaryTools: " );
+		printf( "BinaryTools:" );
 	}
 
 	printf( " ERROR: %s\n", buffer );

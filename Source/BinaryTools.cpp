@@ -53,7 +53,7 @@ extern int ZXTap( int argc, char** argv );
 // ... register the tools
 static Tool gTools[] =
 {
-	{ "help", Help, "Show extended help for a specific tool. e.g. BinaryTools help pad", "tool-name", "Show help for a specific tool." },
+	{ "help", Help, "Show help for a specific tool. e.g. BinaryTools help pad", "tool-name", "Show help for a specific tool." },
 
 	//-----------------
 
@@ -151,16 +151,11 @@ static void printUsage()
 
 void PrintHelp( const char* pName )
 {
-#ifdef _DEBUG
-	Print80ColRuler();
-#endif // _DEBUG
-
 	int iTool = findTool( pName );
 
 	if ( iTool < 0 )
 	{
 		PrintError( "Unknown tool \"%s\". Cannot display help.", pName );
-		printUsage();
 		return;
 	}
 	else
@@ -196,6 +191,10 @@ static int Help( int argc, char** argv )
 int main( int argc, char** argv )
 {
 	int iReturnCode = 0;
+
+#ifdef _DEBUG
+	Print80ColRuler();
+#endif // _DEBUG
 
 	if ( argc < 2 )
 	{
