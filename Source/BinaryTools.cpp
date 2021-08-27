@@ -48,6 +48,7 @@ struct Tool
 extern int Help( int argc, char** argv );
 extern int Join( int argc, char** argv );
 extern int Pad( int argc, char** argv );
+extern int SMSChk( int argc, char** argv );
 extern int ZXTap( int argc, char** argv );
 
 // ... register the tools
@@ -72,6 +73,12 @@ static Tool gTools[] =
 		"           or MBIT. If no suffix is specified, the size will be in bytes.\n"
 		"           Specify in hexadecimal using either 0x, & or $ prefix or h suffix.\n\n"
 		"  [fill]   Use this to specify a different byte value. Default is 0x00.\n"
+	},
+
+	{
+		"smschk", SMSChk, "Sign a Master System ROM with a valid checksum.", "<rom-file>",
+		"  <rom-file>   A ROM file to sign with a valid checksum. Caution: The file will\n"
+		"               be modified in-place.\n"
 	},
 
 	{

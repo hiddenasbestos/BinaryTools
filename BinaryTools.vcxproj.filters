@@ -21,6 +21,9 @@
     <ClCompile Include="Source\join.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\smschk.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\utils.h">

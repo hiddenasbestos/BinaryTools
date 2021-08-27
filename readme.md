@@ -12,6 +12,7 @@ Tool  |Description
 :---|:------------
 [join](#join) | Join multiple files into a separate output.
 [pad](#pad) | Pad a file to a given size.
+[smschk](#smschk) | Sign a Master System ROM with a valid checksum.
 [zxtap](#zxtap) | Convert machine code into a ZX Spectrum .TAP file.
 
 
@@ -82,6 +83,30 @@ Create a new file 'new.bin' (assuming, for the purposes of this example, that th
 
 * Take care to make backups, or to use only on intermediate files, as the program will overwrite existing files without asking for confirmation.
 
+
+---
+
+## smschk
+
+Sign a Master System ROM with a valid checksum.
+
+**Usage**
+```
+BinaryTools smschk <rom-file>
+
+  <rom-file>   A ROM file to sign with a valid checksum. Caution: The file will
+               be modified in-place.
+```
+
+**Examples**
+
+```> BinaryTools smschk game.sms```
+
+Update the given Master System ROM file with a valid checksum.
+
+**Notes**
+
+* For homebrew software, typically you will want to use the 'pad' tool on the file first to grow it to a standard size such as 32KB, 128KB, 256KB or 512KB. Otherwise the checksum can't be written to the correct location in the file.
 
 ---
 
