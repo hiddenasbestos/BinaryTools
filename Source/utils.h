@@ -37,8 +37,12 @@ int DetectHexPrefix( const char* pStr );
 // Helper to fit, for example, usage text within 80 columns
 void Print80ColRuler();
 
-// Print all of the command line arguments with thier index.
+// Print all of the command line arguments with their index.
 void DebugCmdArgs( int argc, char** argv );
+
+// Find a matching argument in the command line arguments (skips index 0).
+// Case insensitive. If found, returns index, if not returns -1.
+int FindArg( const char* pArg, int argc, char** argv );
 
 // Parse a string, detecting a size suffix (KB, MBIT, etc.) and return a byte amount.
 // Supports hexadecimal mode. Returns -1 on invalid number.

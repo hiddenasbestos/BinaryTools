@@ -75,6 +75,24 @@ void DebugCmdArgs( int argc, char** argv )
 }
 
 //------------------------------------------------------------------------------
+// FindArg
+//------------------------------------------------------------------------------
+int FindArg( const char* pArg, int argc, char** argv )
+{
+	// skip arg[0] as it's the command name.
+	for ( int i = 1; i < argc; ++i )
+	{
+		if ( _stricmp( pArg, argv[ i ] ) == 0 )
+		{
+			return i;
+		}
+	}
+
+	// not found.
+	return -1;
+}
+
+//------------------------------------------------------------------------------
 // ParseWithSizeSuffix
 //------------------------------------------------------------------------------
 int64_t ParseSizeWithSuffix( const char* pStr )
