@@ -54,11 +54,16 @@ int DetectHexPrefix( const char* pStr )
 }
 
 //------------------------------------------------------------------------------
-// Print80ColMarker
+// PrintRuler
 //------------------------------------------------------------------------------
-void Print80ColRuler()
+void PrintRuler( int columns )
 {
-	printf( "-------10!-------20!-------30!-------40!-------50!-------60!-------70!-------80!\n" );
+	for ( int i = 0; ( i + 10 ) <= columns; i += 10 )
+	{
+		printf( "-------%02d!", i + 10 );
+	}
+
+	putchar( '\n' );
 }
 
 //------------------------------------------------------------------------------
@@ -235,7 +240,7 @@ int ParseValue( const char* pStr, int iLimit )
 //------------------------------------------------------------------------------
 void TestParsingSizes()
 {
-	Print80ColRuler();
+	PrintRuler( 80 );
 	printf( "Test function to develop/debug ParseWithSizeSuffix function.\n" );
 
 	for ( ; ; )

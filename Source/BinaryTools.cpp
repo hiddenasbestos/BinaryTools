@@ -200,7 +200,7 @@ int main( int argc, char** argv )
 	int iReturnCode = 0;
 
 #ifdef _DEBUG
-	Print80ColRuler();
+	PrintRuler( 80 );
 #endif // _DEBUG
 
 	if ( argc < 2 )

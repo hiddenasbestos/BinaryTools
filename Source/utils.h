@@ -34,8 +34,8 @@ SOFTWARE.
 // Detect a hex prefix and return a character offset after it. Zero if not found.
 int DetectHexPrefix( const char* pStr );
 
-// Helper to fit, for example, usage text within 80 columns
-void Print80ColRuler();
+// Helper to print a ruler. columns must be a multiple of 10 -- e.g. 40 or 80
+void PrintRuler( int columns );
 
 // Print all of the command line arguments with their index.
 void DebugCmdArgs( int argc, char** argv );
