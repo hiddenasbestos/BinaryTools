@@ -10,11 +10,45 @@ The following tools are provided. Click on a tool name to jump to its specific d
 
 Tool  |Description
 :---|:------------
+[data](#data) | Convert a binary file into BASIC DATA statements.
 [join](#join) | Join multiple files into a separate output.
 [pad](#pad) | Pad a file to a given size.
 [smschk](#smschk) | Sign a Master System ROM with a valid checksum.
 [zxtap](#zxtap) | Convert machine code into a ZX Spectrum .TAP file.
 
+
+---
+
+## data
+
+Convert a binary file into BASIC DATA statements.
+
+**Usage**
+```
+ BinaryTools data <file> <output> [-line start[,step]] [-cols width]
+
+  <file>    An input file to read.
+
+  <output>  Text output for the DATA statements.
+
+  -line     Specify the starting line number and step.
+            Default is line 1000 with step 10.
+
+  -cols     Specify the maximum line length.
+            Default is 40 columns, minimum is 20.
+```
+
+**Examples**
+
+```> BinaryTools data zxhello.bin zxhello.bas -line 100,5 -cols 30```
+
+Converts the binary program `zxhello.bin` into BASIC DATA statements. Code will start at line 100 with an increment of 5 for each additional line. Each line will be no longer than 30 characters (including the line number and DATA statement).
+
+**Notes**
+
+* Each byte of input data is stored as a decimal value (0 - 255) in a separate element.
+
+* A simple 'loader' program could be written to `READ` this data and `POKE` it into memory.
 
 ---
 

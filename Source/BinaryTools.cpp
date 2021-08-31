@@ -1,4 +1,3 @@
-
 /*
 
 Copyright (c) 2021 David Walters
@@ -46,6 +45,7 @@ struct Tool
 
 // ... add to this list as new tools are created.
 extern int Help( int argc, char** argv );
+extern int Data( int argc, char** argv );
 extern int Join( int argc, char** argv );
 extern int Pad( int argc, char** argv );
 extern int SMSChk( int argc, char** argv );
@@ -57,6 +57,16 @@ static Tool gTools[] =
 	{ "help", Help, "Show help for a specific tool. e.g. BinaryTools help pad", "tool-name", "Show help for a specific tool." },
 
 	//-----------------
+
+	{
+		"data", Data, "Convert a binary file into BASIC DATA statements.", "<file> <output> [-line start[,step]] [-cols width]",
+		"  <file>     An input file to read.\n\n"
+		"  <output>   Text output for the DATA statements.\n\n"
+		"  -line      Specify the starting line number and step.\n"
+	    "             Default is line 1000 with step 10.\n\n"
+		"  -cols      Specify the maximum line length.\n"
+		"             Default is 40 columns, minimum is 20.\n"
+	},
 
 	{
 		"join", Join, "Join multiple files into a separate output.", "<file> [<file> ...] <output>",

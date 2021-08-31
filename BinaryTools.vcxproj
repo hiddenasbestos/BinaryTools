@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\BinaryTools.cpp" />
+    <ClCompile Include="Source\data.cpp" />
     <ClCompile Include="Source\join.cpp" />
     <ClCompile Include="Source\pad.cpp" />
     <ClCompile Include="Source\smschk.cpp" />
