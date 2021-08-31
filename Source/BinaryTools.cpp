@@ -59,13 +59,14 @@ static Tool gTools[] =
 	//-----------------
 
 	{
-		"data", Data, "Convert a binary file into BASIC DATA statements.", "<file> <output> [-line start[,step]] [-cols width]",
+		"data", Data, "Convert a binary file into BASIC DATA statements.", "<file> <output> [-line start[,step]] [-cols width] [-compact]",
 		"  <file>     An input file to read.\n\n"
 		"  <output>   Text output for the DATA statements.\n\n"
 		"  -line      Specify the starting line number and step.\n"
 	    "             Default is line 1000 with step 10.\n\n"
 		"  -cols      Specify the maximum line length.\n"
-		"             Default is 40 columns, minimum is 20.\n"
+		"             Default is 40 columns, minimum is 20.\n\n"
+		"  -compact   Don't include a space after each comma.\n"
 	},
 
 	{

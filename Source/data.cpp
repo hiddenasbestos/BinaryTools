@@ -54,6 +54,8 @@ int Data( int argc, char** argv )
 	const char* pInputName = nullptr;
 	const char* pOutputName = nullptr;
 
+	bool bOptCompact = false;
+
 	enum eOption
 	{
 		NONE,
@@ -154,7 +156,11 @@ int Data( int argc, char** argv )
 		}
 		else if ( *pArg == '-' )
 		{
-			if ( _stricmp( pArg, "-line" ) == 0 )
+			if ( _stricmp( pArg, "-compact" ) == 0 )
+			{
+				bOptCompact = true;
+			}
+			else if ( _stricmp( pArg, "-line" ) == 0 )
 			{
 				specialNextArg = OPT_LINE_NUMBER;
 			}
@@ -224,15 +230,18 @@ int Data( int argc, char** argv )
 		if ( input == EOF )
 			break;
 
-		int iUnitLength = decimalLength( input );
 
 		// existing line in progress?
 		if ( iLineLength > 0 )
 		{
+			// measure next piece of data and the previous delimiter
+			int iUnitLength = decimalLength( input );
+			iUnitLength += bOptCompact ? 2 : 1;
+			
 			// room for delimiter and another piece of data?
-			if ( iLineLength + 2 + iUnitLength < iLineWidth )
+			if ( iLineLength + iUnitLength < iLineWidth )
 			{
-				count = fprintf( fp_out, ", " );
+				count = fprintf( fp_out, bOptCompact ? "," : ", " );
 				iLineLength += count;
 			}
 			else

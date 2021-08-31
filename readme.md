@@ -36,6 +36,8 @@ Convert a binary file into BASIC DATA statements.
 
   -cols     Specify the maximum line length.
             Default is 40 columns, minimum is 20.
+
+  -compact  Don't include a space after each comma.
 ```
 
 **Examples**
