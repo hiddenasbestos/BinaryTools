@@ -48,6 +48,7 @@ extern int Help( int argc, char** argv );
 extern int Data( int argc, char** argv );
 extern int Join( int argc, char** argv );
 extern int Pad( int argc, char** argv );
+extern int RLE( int argc, char** argv );
 extern int SMSChk( int argc, char** argv );
 extern int ZXTap( int argc, char** argv );
 
@@ -84,6 +85,14 @@ static Tool gTools[] =
 		"           or MBIT. If no suffix is specified, the size will be in bytes.\n"
 		"           Specify in hexadecimal using either 0x, & or $ prefix or h suffix.\n\n"
 		"  [fill]   Use this to specify a different byte value. Default is 0x00.\n"
+	},
+
+	{
+		"rle", RLE, "Compress a file using run-length encoding.", "<file> <output> [-planes N]",
+		"  <file>      The input file.\n\n"
+		"  <output>    The RLE encoded/compressed output.\n\n"
+		"  -planes N   Specify the number of interleaved planes in the input.\n"
+		"              Default is 1 plane.\n"
 	},
 
 	{

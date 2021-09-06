@@ -13,6 +13,7 @@ Tool  |Description
 [data](#data) | Convert a binary file into BASIC DATA statements.
 [join](#join) | Join multiple files into a separate output.
 [pad](#pad) | Pad a file to a given size.
+[rle](#rle) | Compress a file using run-length encoding.
 [smschk](#smschk) | Sign a Master System ROM with a valid checksum.
 [zxtap](#zxtap) | Convert machine code into a ZX Spectrum .TAP file.
 
@@ -119,6 +120,48 @@ Create a new file 'new.bin' (assuming, for the purposes of this example, that th
 
 * Take care to make backups, or to use only on intermediate files, as the program will overwrite existing files without asking for confirmation.
 
+---
+
+## rle
+
+Compress a file using run-length encoding.
+
+**Usage**
+```
+BinaryTools rle <file> <output> [-planes N]
+
+  <file>      The input file.
+
+  <output>    The RLE encoded/compressed output.
+
+  -planes N   Specify the number of interleaved planes in the input.
+              Default is 1 plane.
+```
+
+**Examples**
+
+```> BinaryTools rle tilemap.bin tilemap.rle```
+
+Compress an image file. Each byte of the input is checked against the previous byte and runs of equal bytes are compressed.
+
+```> BinaryTools rle image.bin image.rle -planes 4```
+
+Compress an image file, de-interleaving the file into 4 separate planes. Each plane starts at byte offset 0, 1, 2, 3 respectively and reading of each plane skips ahead by 4 bytes at a time to acquire the next byte of input.
+
+**Notes**
+
+* The output data is a sequence of 'RLE blocks' with no additional header or footer data.
+
+* An RLE block begins with a control byte with the following meanings:
+  * If the high bit of the control byte is set, the low 7 bits are a *run length*. The next input byte is the specific value to repeat.
+  * If the high bit is clear, the low 7 bits are a count of uncompressed data. This data immediately follows the control byte and should be copied to the output directly. 
+  * If the control byte is `00`, this indicates the end of compressed data for this plane.
+
+* Multiple planes are written sequentially to the output and each is separately terminated with a `00` control byte.
+
+* The maximum run length (or raw data count) is 127. Longer runs are split into multiple RLE blocks.
+
+* RLE isn't guaranteed to produce a smaller output for all inputs. The algorithm is most effective for inputs with large amounts of repetition such as images or tile maps.
 
 ---
 

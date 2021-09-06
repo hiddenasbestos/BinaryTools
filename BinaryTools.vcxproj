@@ -15,6 +15,7 @@
     <ClCompile Include="Source\data.cpp" />
     <ClCompile Include="Source\join.cpp" />
     <ClCompile Include="Source\pad.cpp" />
+    <ClCompile Include="Source\rle.cpp" />
     <ClCompile Include="Source\smschk.cpp" />
     <ClCompile Include="Source\utils.cpp" />
     <ClCompile Include="Source\zxtap.cpp" />

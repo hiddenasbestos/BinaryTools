@@ -27,6 +27,9 @@
     <ClCompile Include="Source\data.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\rle.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\utils.h">
