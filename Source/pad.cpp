@@ -59,7 +59,6 @@ int Pad( int argc, char** argv )
 	if ( iNewSize < 0 )
 	{
 		PrintError( "Invalid size \"%s\"", pSize );
-		PrintHelp( "pad" );
 		return 1;
 	}
 

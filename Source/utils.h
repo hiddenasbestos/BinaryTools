@@ -55,7 +55,7 @@ int ParseValue( const char* pStr, int iLimit );
 // Testing for ParseSizeWithSuffix
 void TestParsingSizes();
 
-// Print help for a specific tool.
+// Print hello message + help for a specific tool.
 // NOTE: This function is implemented in BinaryTools.cpp
 void PrintHelp( const char* pName );
 

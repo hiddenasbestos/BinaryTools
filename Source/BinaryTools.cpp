@@ -190,8 +190,11 @@ void PrintHelp( const char* pName )
 		// Alias the tool
 		const Tool& tool = gTools[ iTool ];
 
+		// Hello
+		printHello();
+
 		// Usage
-		printf( "\n%s\n\nUSAGE: BinaryTools %s %s\n\n%s\n", tool.pDescription, pName, tool.pHelpArgs, tool.pHelpDesc );
+		printf( "%s\n\nUSAGE: BinaryTools %s %s\n\n%s\n", tool.pDescription, pName, tool.pHelpArgs, tool.pHelpDesc );
 	}
 }
 
