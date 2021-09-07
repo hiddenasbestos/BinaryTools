@@ -54,7 +54,6 @@ int Data( int argc, char** argv )
 	const char* pInputName = nullptr;
 	const char* pOutputName = nullptr;
 
-	bool bOptCompact = false;
 
 	enum eOption
 	{
@@ -66,8 +65,9 @@ int Data( int argc, char** argv )
 	eOption specialNextArg = NONE;
 
 	// defaults.
+	bool bOptCompact = false;
 	int iLineWidth = 40;
-	int iLine = 1000;
+	int iLine = -1; // -1 = default - no line numbers
 	int iStep = 10;
 
 	// parse arguments (after the tool name)
@@ -219,7 +219,14 @@ int Data( int argc, char** argv )
 		return 1;
 	}
 
-	Info( "Writing DATA from line %d to \"%s\" ... ", iLine, pOutputName );
+	if ( iLine >= 0 )
+	{
+		Info( "Writing DATA from line %d to \"%s\" ... ", iLine, pOutputName );
+	}
+	else
+	{
+		Info( "Writing DATA to \"%s\" ... ", pOutputName );
+	}
 
 	int iLineLength = 0;
 
@@ -229,7 +236,6 @@ int Data( int argc, char** argv )
 
 		if ( input == EOF )
 			break;
-
 
 		// existing line in progress?
 		if ( iLineLength > 0 )
@@ -250,14 +256,25 @@ int Data( int argc, char** argv )
 				fprintf( fp_out, "\n" );
 				iLineLength = 0;
 
-				iLine += iStep;
+				if ( iLine >= 0 )
+				{
+					iLine += iStep;
+				}
 			}
 		}
 		
 		// begin a new line?
 		if ( iLineLength == 0 )
 		{
-			count = fprintf( fp_out, "%d DATA ", iLine );
+			count = 0;
+
+			if ( iLine >= 0 )
+			{
+				count += fprintf( fp_out, "%d ", iLine );
+			}
+
+			count += fprintf( fp_out, "DATA " );
+
 			iLineLength += count;
 		}
 

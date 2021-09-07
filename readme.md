@@ -22,7 +22,7 @@ Tool  |Description
 
 ## data
 
-Convert a binary file into BASIC DATA statements.
+Convert a binary file into DATA statements.
 
 **Usage**
 ```
@@ -33,7 +33,7 @@ Convert a binary file into BASIC DATA statements.
   <output>  Text output for the DATA statements.
 
   -line     Specify the starting line number and step.
-            Default is line 1000 with step 10.
+            Default is no line numbers.
 
   -cols     Specify the maximum line length.
             Default is 40 columns, minimum is 20.
