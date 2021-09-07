@@ -10,7 +10,7 @@ The following tools are provided. Click on a tool name to jump to its specific d
 
 Tool  |Description
 :---|:------------
-[data](#data) | Convert a binary file into BASIC DATA statements.
+[data](#data) | Convert a binary file into data statements.
 [join](#join) | Join multiple files into a separate output.
 [pad](#pad) | Pad a file to a given size.
 [rle](#rle) | Compress a file using run-length encoding.
