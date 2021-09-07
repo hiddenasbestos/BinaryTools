@@ -29,21 +29,62 @@ SOFTWARE.
 #include "utils.h"
 
 
-// ... up to 255
-static int decimalLength( int val )
+enum eValueFormat
 {
-	if ( val < 10 )
+	DECIMAL,
+	HEX_0X,
+	HEX_DOLLAR,
+	HEX_AMPERSAND,
+	BIN_0B,
+	BIN_PERCENT
+};
+
+// ... values up to 255
+static int valueLength( int val, eValueFormat mode )
+{
+	switch ( mode )
 	{
-		return 1;
-	}
-	else if ( val < 100 )
+
+	default:
+	case DECIMAL:
+		if ( val < 10 )
+		{
+			return 1;
+		}
+		else if ( val < 100 )
+		{
+			return 2;
+		}
+		else
+		{
+			return 3;
+		}
+
+	case HEX_0X:
+		return 4; // 0x##
+
+	case HEX_AMPERSAND:
+	case HEX_DOLLAR:
+		return 3; // $## or &##
+
+	case BIN_0B:
+		return 10; // 0x########
+
+	case BIN_PERCENT:
+		return 9; // %########
+
+	};
+}
+
+static int write_byte_binary( uint8_t input, FILE* fp_out )
+{
+	for ( int i = 0; i < 8; ++i )
 	{
-		return 2;
+		fputc( ( input & 0x80 ) ? '1' : '0', fp_out );
+		input <<= 1;
 	}
-	else
-	{
-		return 3;
-	}
+
+	return 8; // helps count output bytes
 }
 
 //------------------------------------------------------------------------------
@@ -53,7 +94,6 @@ int Data( int argc, char** argv )
 {
 	const char* pInputName = nullptr;
 	const char* pOutputName = nullptr;
-
 
 	enum eOption
 	{
@@ -66,6 +106,7 @@ int Data( int argc, char** argv )
 
 	// defaults.
 	bool bOptCompact = false;
+	eValueFormat valueFormat = DECIMAL;
 	int iLineWidth = 40;
 	int iLine = -1; // -1 = default - no line numbers
 	int iStep = 10;
@@ -168,6 +209,30 @@ int Data( int argc, char** argv )
 			{
 				specialNextArg = OPT_COLUMNS;
 			}
+			else if ( _stricmp( pArg, "-dec" ) == 0 )
+			{
+				valueFormat = DECIMAL;
+			}
+			else if ( _stricmp( pArg, "-hex" ) == 0 )
+			{
+				valueFormat = HEX_0X;
+			}
+			else if ( _stricmp( pArg, "-bux" ) == 0 )
+			{
+				valueFormat = HEX_DOLLAR;
+			}
+			else if ( _stricmp( pArg, "-amp" ) == 0 )
+			{
+				valueFormat = HEX_AMPERSAND;
+			}
+			else if ( _stricmp( pArg, "-bin" ) == 0 )
+			{
+				valueFormat = BIN_0B;
+			}
+			else if ( _stricmp( pArg, "-pct" ) == 0 )
+			{
+				valueFormat = BIN_PERCENT;
+			}
 			else
 			{
 				// error.
@@ -219,14 +284,14 @@ int Data( int argc, char** argv )
 		return 1;
 	}
 
+	Info( "Writing DATA" );
+
 	if ( iLine >= 0 )
 	{
-		Info( "Writing DATA from line %d to \"%s\" ... ", iLine, pOutputName );
+		printf( " from line %d", iLine );
 	}
-	else
-	{
-		Info( "Writing DATA to \"%s\" ... ", pOutputName );
-	}
+
+	printf( " to \"%s\" ... ", pOutputName );
 
 	int iLineLength = 0;
 
@@ -241,11 +306,11 @@ int Data( int argc, char** argv )
 		if ( iLineLength > 0 )
 		{
 			// measure next piece of data and the previous delimiter
-			int iUnitLength = decimalLength( input );
+			int iUnitLength = valueLength( input, valueFormat );
 			iUnitLength += bOptCompact ? 2 : 1;
-			
+
 			// room for delimiter and another piece of data?
-			if ( iLineLength + iUnitLength < iLineWidth )
+			if ( ( iLineWidth < 0 ) || ( iLineLength + iUnitLength < iLineWidth ) )
 			{
 				count = fprintf( fp_out, bOptCompact ? "," : ", " );
 				iLineLength += count;
@@ -262,7 +327,7 @@ int Data( int argc, char** argv )
 				}
 			}
 		}
-		
+
 		// begin a new line?
 		if ( iLineLength == 0 )
 		{
@@ -278,7 +343,37 @@ int Data( int argc, char** argv )
 			iLineLength += count;
 		}
 
-		count = fprintf( fp_out, "%d", input );
+		switch ( valueFormat )
+		{
+
+		case DECIMAL:
+			count = fprintf( fp_out, "%d", input );
+			break;
+
+		case HEX_0X:
+			count = fprintf( fp_out, "0x%X", input );
+			break;
+
+		case HEX_DOLLAR:
+			count = fprintf( fp_out, "$%X", input );
+			break;
+
+		case HEX_AMPERSAND:
+			count = fprintf( fp_out, "&%X", input );
+			break;
+
+		case BIN_0B:
+			count = fprintf( fp_out, "0b" );
+			count += write_byte_binary( input, fp_out );
+			break;
+
+		case BIN_PERCENT:
+			count = fprintf( fp_out, "%%" );
+			count += write_byte_binary( input, fp_out );
+			break;
+
+		}
+
 		iLineLength += count;
 	}
 

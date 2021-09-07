@@ -26,7 +26,7 @@ Convert a binary file into DATA statements.
 
 **Usage**
 ```
- BinaryTools data <file> <output> [-line start[,step]] [-cols width]
+ BinaryTools data <file> <output> [-line start[,step]] [-cols width] [-compact] [-amp|-bin|-bux|-dec|-hex|-pct]
 
   <file>    An input file to read.
 
@@ -36,9 +36,17 @@ Convert a binary file into DATA statements.
             Default is no line numbers.
 
   -cols     Specify the maximum line length.
-            Default is 40 columns, minimum is 20.
+            Default is no limit, minimum is 20.
 
   -compact  Don't include a space after each comma.
+
+  -amp      Write values in hexadecimal with '&' prefix.
+  -bin      Write values in binary with '0b' prefix.
+  -bux      Write values in hexadecimal with '$' prefix.
+  -dec      Write values in decimal (default).
+  -hex      Write values in hexadecimal with '0x' prefix.
+  -pct      Write values in binary with '%' prefix.
+
 ```
 
 **Examples**
