@@ -40,6 +40,14 @@ enum eValueFormat
 	OCTAL
 };
 
+enum eStatement
+{
+	BASIC_DATA,
+	ASM_BYTE,
+	ASM_DB,
+	ASM_DCB,
+};
+
 // ... values up to 255
 static int valueLength( int val, eValueFormat mode )
 {
@@ -102,6 +110,27 @@ static int write_byte_binary( uint8_t input, FILE* fp_out )
 	return 8; // helps count output bytes
 }
 
+static int write_spaces( int count, FILE* fp_out )
+{
+	for ( int i = 0; i < count; ++i )
+	{
+		fputc( ' ', fp_out );
+	}
+
+	return count;
+}
+
+static int write_tabs( int count, FILE* fp_out )
+{
+	for ( int i = 0; i < count; ++i )
+	{
+		fputc( '\t', fp_out );
+	}
+
+	return count;
+}
+
+
 //------------------------------------------------------------------------------
 // Data
 //------------------------------------------------------------------------------
@@ -115,11 +144,16 @@ int Data( int argc, char** argv )
 		NONE,
 		OPT_LINE_NUMBER,
 		OPT_COLUMNS,
+		OPT_TABS,
+		OPT_SPACES,
 	};
 
 	eOption specialNextArg = NONE;
 
 	// defaults.
+	eStatement statement = BASIC_DATA;
+	int iTabs = 1;
+	int iSpaces = 0;
 	bool bOptCompact = false;
 	eValueFormat valueFormat = DECIMAL;
 	int iLineWidth = 40;
@@ -135,6 +169,50 @@ int Data( int argc, char** argv )
 		{
 			switch ( specialNextArg )
 			{
+
+			case OPT_TABS:
+
+				{
+					int iValue;
+					char* pEnd = nullptr;
+					iValue = strtol( pArg, &pEnd, 10 );
+
+					if ( *pEnd != 0 )
+					{
+						// error.
+						PrintError( "Invalid -tabs parameter \"%s\".", pArg );
+						return 1;
+					}
+					else
+					{
+						iTabs = iValue;
+						iSpaces = 0;
+					}
+				}
+
+				break;
+
+			case OPT_SPACES:
+
+				{
+					int iValue;
+					char* pEnd = nullptr;
+					iValue = strtol( pArg, &pEnd, 10 );
+
+					if ( *pEnd != 0 )
+					{
+						// error.
+						PrintError( "Invalid -spc parameter \"%s\".", pArg );
+						return 1;
+					}
+					else
+					{
+						iSpaces = iValue;
+						iTabs = 0;
+					}
+				}
+
+				break;
 
 			case OPT_COLUMNS:
 
@@ -215,6 +293,30 @@ int Data( int argc, char** argv )
 			if ( _stricmp( pArg, "-compact" ) == 0 )
 			{
 				bOptCompact = true;
+			}
+			else if ( _stricmp( pArg, "-data" ) == 0 )
+			{
+				statement = BASIC_DATA;
+			}
+			else if ( _stricmp( pArg, "-byte" ) == 0 )
+			{
+				statement = ASM_BYTE;
+			}
+			else if ( _stricmp( pArg, "-db" ) == 0 )
+			{
+				statement = ASM_DB;
+			}
+			else if ( _stricmp( pArg, "-dcb" ) == 0 )
+			{
+				statement = ASM_DCB;
+			}
+			else if ( _stricmp( pArg, "-tab" ) == 0 )
+			{
+				specialNextArg = OPT_TABS;
+			}
+			else if ( _stricmp( pArg, "-spc" ) == 0 )
+			{
+				specialNextArg = OPT_SPACES;
 			}
 			else if ( _stricmp( pArg, "-line" ) == 0 )
 			{
@@ -303,7 +405,27 @@ int Data( int argc, char** argv )
 		return 1;
 	}
 
-	Info( "Writing DATA" );
+	Info( "Writing " );
+
+	switch ( statement )
+	{
+	default:
+	case BASIC_DATA:
+		printf( "DATA" );
+		break;
+
+	case ASM_BYTE:
+		printf( ".BYTE" );
+		break;
+
+	case ASM_DB:
+		printf( "DB" );
+		break;
+
+	case ASM_DCB:
+		printf( "DC.B" );
+		break;
+	}
 
 	if ( iLine >= 0 )
 	{
@@ -352,12 +474,43 @@ int Data( int argc, char** argv )
 		{
 			count = 0;
 
+			// line number?
 			if ( iLine >= 0 )
 			{
 				count += fprintf( fp_out, "%d ", iLine );
 			}
 
-			count += fprintf( fp_out, "DATA " );
+			// spacing.
+			if ( statement != BASIC_DATA && iTabs > 0 && iLine < 0 )
+			{
+				count += write_tabs( iTabs, fp_out );
+			}
+			else if ( iSpaces > 0 )
+			{
+				count += write_spaces( iSpaces, fp_out );
+			}
+				
+			// statement type
+			switch ( statement )
+			{
+			default:
+			case BASIC_DATA:
+				count += fprintf( fp_out, "DATA " );
+				break;
+
+			case ASM_BYTE:
+				count += fprintf( fp_out, ".byte " );
+				break;
+
+			case ASM_DB:
+				count += fprintf( fp_out, "db " );
+				break;
+
+			case ASM_DCB:
+				count += fprintf( fp_out, "dc.b " );
+				break;
+
+			}
 
 			iLineLength += count;
 		}

@@ -60,14 +60,29 @@ static Tool gTools[] =
 	//-----------------
 
 	{
-		"data", Data, "Convert a binary file into DATA statements.", "<file> <output> [-line start[,step]] [-cols width]\n\t\t[-compact] [-amp|-bin|-bux|-dec|-hex|-pct]",
+		"data", Data, "Convert a binary file into data statements.", "<file> <output> [-basic|-byte|-db|-dcb]\n\t[-line start[,step]] [-tab n|-spc n] [-cols width] [-compact]\n\t[-amp|-bin|-bux|-dec|-hex|-oct|-pct]",
 		"  <file>      An input file to read.\n\n"
-		"  <output>    Text output for the DATA statements.\n\n"
-		"  -line L,S   Specify the starting line number and step.\n"
+		"  <output>    Text output file for the statements.\n\n"
+		
+		"  -basic      Write BASIC 'DATA' statements (default).\n"
+		"  -byte       Write assembly '.byte' statements.\n"
+		"  -db         Write assembly 'db' statements.\n"
+		"  -dcb        Write assembly 'dc.b' statements.\n\n"
+
+		"  -line L,S   Specify the starting line number and optionally a custom step.\n"
 	    "              Default is no line numbers.\n\n"
+		
+		"  -tab N      How many tab characters to prefix an assembly line. Default 1.\n"
+		"              Tabs are ignored in BASIC DATA mode or if line numbers are used.\n\n"
+
+		"  -spc N      How many space characters to prefix a line. Default 0.\n"
+		"              Spaces are ignored if tabs are used.\n\n"
+
 		"  -cols W     Specify the maximum line length.\n"
 		"              Default is 40 columns, minimum is 20.\n\n"
-		"  -compact    Don't include a space after each comma.\n\n"
+
+		"  -compact    Don't include a space after each comma delimiter between values.\n\n"
+		
 		"  -amp        Write values in hexadecimal with '&' prefix.\n"
 		"  -bin        Write values in binary with '0b' prefix.\n"
 		"  -bux        Write values in hexadecimal with '$' prefix.\n"
@@ -75,6 +90,7 @@ static Tool gTools[] =
 		"  -hex        Write values in hexadecimal with '0x' prefix.\n"
 		"  -oct        Write values in octal with '0' prefix.\n"
 		"  -pct        Write values in binary with '%' prefix.\n"
+		
 	},
 
 	{

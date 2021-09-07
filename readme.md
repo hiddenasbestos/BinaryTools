@@ -22,31 +22,44 @@ Tool  |Description
 
 ## data
 
-Convert a binary file into DATA statements.
+Convert a binary file into data statements.
 
 **Usage**
 ```
- BinaryTools data <file> <output> [-line start[,step]] [-cols width] [-compact] [-amp|-bin|-bux|-dec|-hex|-pct]
+ BinaryTools data <file> <output> [-basic|-byte|-db|-dcb]
+              [-line start[,step]] [-tab n|-spc n] [-cols width] [-compact]
+              [-amp|-bin|-bux|-dec|-hex|-oct|-pct]
 
-  <file>    An input file to read.
+  <file>      An input file to read.
 
-  <output>  Text output for the DATA statements.
+  <output>    Text output file for the statements.
 
-  -line     Specify the starting line number and step.
-            Default is no line numbers.
+  -basic      Write BASIC 'DATA' statements (default).
+  -byte       Write assembly '.byte' statements.
+  -db         Write assembly 'db' statements.
+  -dcb        Write assembly 'dc.b' statements.
 
-  -cols     Specify the maximum line length.
-            Default is no limit, minimum is 20.
+  -line L,S   Specify the starting line number and optionally a custom step.
+              Default is no line numbers.
+		
+  -tab N      How many tab characters to prefix an assembly line. Default 1.
+              Tabs are ignored in BASIC DATA mode or if line numbers are used.
 
-  -compact  Don't include a space after each comma.
+  -spc N      How many space characters to prefix a line. Default 0.
+              Spaces are ignored if tabs are used.
 
-  -amp      Write values in hexadecimal with '&' prefix.
-  -bin      Write values in binary with '0b' prefix.
-  -bux      Write values in hexadecimal with '$' prefix.
-  -dec      Write values in decimal (default).
-  -hex      Write values in hexadecimal with '0x' prefix.
-  -pct      Write values in binary with '%' prefix.
+  -cols       Specify the maximum line length.
+              Default is 40 columns, minimum is 20.
 
+  -compact    Don't include a space after each comma delimiter between values.
+
+  -amp        Write values in hexadecimal with '&' prefix.
+  -bin        Write values in binary with '0b' prefix.
+  -bux        Write values in hexadecimal with '$' prefix.
+  -dec        Write values in decimal (default).
+  -hex        Write values in hexadecimal with '0x' prefix.
+  -oct        Write values in octal with '0' prefix.
+  -pct        Write values in binary with '%' prefix.
 ```
 
 **Examples**
@@ -55,11 +68,15 @@ Convert a binary file into DATA statements.
 
 Converts the binary program `zxhello.bin` into BASIC DATA statements. Code will start at line 100 with an increment of 5 for each additional line. Each line will be no longer than 30 characters (including the line number and DATA statement).
 
+```> BinaryTools data hello.txt hello.src -bux -cols 40 -byte -spc 1 -line 10```
+
+Convert a binary file into byte directives suitable for use by the Atari 8-bit Assembler Editor.
+
 **Notes**
 
 * Each byte of input data is stored as a decimal value (0 - 255) in a separate element.
 
-* A simple 'loader' program could be written to `READ` this data and `POKE` it into memory.
+* A simple BASIC 'loader' program could be written to `READ` this data and `POKE` it into memory.
 
 ---
 
