@@ -74,7 +74,7 @@ Convert a binary file into byte directives suitable for use by the Atari 8-bit A
 
 **Notes**
 
-* Each byte of input data is stored as a decimal value (0 - 255) in a separate element.
+* Each byte of input data is stored as a separate value (in decimal, hexadecimal, binary or octal notation) with a comma delimiter.
 
 * A simple BASIC 'loader' program could be written to `READ` this data and `POKE` it into memory.
 
