@@ -36,7 +36,8 @@ enum eValueFormat
 	HEX_DOLLAR,
 	HEX_AMPERSAND,
 	BIN_0B,
-	BIN_PERCENT
+	BIN_PERCENT,
+	OCTAL
 };
 
 // ... values up to 255
@@ -72,6 +73,20 @@ static int valueLength( int val, eValueFormat mode )
 
 	case BIN_PERCENT:
 		return 9; // %########
+
+	case OCTAL:
+		if ( val < 8 )
+		{
+			return 2; // 0#
+		}
+		else if ( val < 0100 /*64*/ )
+		{
+			return 3; // 0##
+		}
+		else
+		{
+			return 4; // 0###
+		}
 
 	};
 }
@@ -233,6 +248,10 @@ int Data( int argc, char** argv )
 			{
 				valueFormat = BIN_PERCENT;
 			}
+			else if ( _stricmp( pArg, "-oct" ) == 0 )
+			{
+				valueFormat = OCTAL;
+			}
 			else
 			{
 				// error.
@@ -370,6 +389,10 @@ int Data( int argc, char** argv )
 		case BIN_PERCENT:
 			count = fprintf( fp_out, "%%" );
 			count += write_byte_binary( input, fp_out );
+			break;
+
+		case OCTAL:
+			count = fprintf( fp_out, "0%o", input );
 			break;
 
 		}

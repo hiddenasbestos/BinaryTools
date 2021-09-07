@@ -73,6 +73,7 @@ static Tool gTools[] =
 		"  -bux        Write values in hexadecimal with '$' prefix.\n"
 		"  -dec        Write values in decimal (default).\n"
 		"  -hex        Write values in hexadecimal with '0x' prefix.\n"
+		"  -oct        Write values in octal with '0' prefix.\n"
 		"  -pct        Write values in binary with '%' prefix.\n"
 	},
 
