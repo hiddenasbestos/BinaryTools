@@ -25,29 +25,67 @@ SOFTWARE.
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <vector>
 
 #include "utils.h"
 
-#include <vector>
+enum Endian
+{
+	LITTLE_ENDIAN,
+	BIG_ENDIAN
+};
 
-
-// 8-bit RLE encoder.
-struct Rle8Encoder
+// Simple RLE encoder.
+template< typename T >
+struct SimpleRleEncoder
 {
 	FILE* fp_out;
 	int _reps;
-	enum { MAX_COUNT = 127 };
+	bool _bCtrlIsByte;
+	Endian _endian;
+	int _iMaxCount;
 
-	std::vector< uint8_t > _rawbuf;
+	std::vector< T > _rawbuf;
 
-	Rle8Encoder( FILE* fp ) :
+	SimpleRleEncoder( FILE* fp, bool bCtrlIsByte, Endian endian ) :
+
 		_reps( 0 ),
+		_bCtrlIsByte( bCtrlIsByte ),
+		_endian( endian ),
 		fp_out( fp )
 	{
 		//
+		if ( _bCtrlIsByte )
+		{
+			// we only have 7
+			_iMaxCount = 127;
+		}
+		else
+		{
+			// fill all available lower bits.
+			_iMaxCount = ( 1 << ( ( sizeof( T ) * 8 ) - 1 ) ) - 1;
+		}
+
+		BeginPlane();
 	}
 
-	void Add( uint8_t data )
+	void BeginPlane()
+	{
+		_reps = 0;
+		_rawbuf.clear();
+	}
+
+	void WriteBigEndian( T val )
+	{
+		uint8_t* p = (uint8_t*)&val;
+
+		for ( int i = sizeof( T ) - 1; i >= 0; --i )
+		{
+			fputc( p[i], fp_out );
+		}
+	}
+
+	void Add( T data )
 	{
 		if ( _rawbuf.empty() )
 		{
@@ -55,7 +93,7 @@ struct Rle8Encoder
 		}
 		else
 		{
-			uint8_t lastData = _rawbuf[ _rawbuf.size() - 1 ];
+			T lastData = _rawbuf[ _rawbuf.size() - 1 ];
 
 			if ( data == lastData )
 			{
@@ -76,7 +114,7 @@ struct Rle8Encoder
 				++_reps;
 
 				// Overflow?
-				if ( _reps == MAX_COUNT - 1 )
+				if ( _reps == _iMaxCount - 1 )
 				{
 					Flush();
 				}
@@ -93,7 +131,7 @@ struct Rle8Encoder
 				_rawbuf.push_back( data );
 
 				// Overflow?
-				if ( _rawbuf.size() == MAX_COUNT )
+				if ( _rawbuf.size() == _iMaxCount )
 				{
 					Flush();
 				}
@@ -107,24 +145,60 @@ struct Rle8Encoder
 		{
 			// Uniform data.
 
-			uint8_t repData = _rawbuf[ 0 ];
+			if ( _bCtrlIsByte )
+			{
+				uint8_t ctrl;
+				ctrl = 0x80 | static_cast<uint8_t>( _reps + 1 ); // +1 to count initial ambiguous value
+				fputc( ctrl, fp_out );
+			}
+			else
+			{
+				T ctrl;
+				ctrl = ( 1 << ( ( sizeof( T ) * 8 ) - 1 ) ) | static_cast< uint8_t >( _reps + 1 ); // +1 to count initial ambiguous value
+
+				if ( _endian == BIG_ENDIAN )
+				{
+					WriteBigEndian( ctrl );
+				}
+				else
+				{
+					fwrite( &ctrl, sizeof( T ), 1, fp_out );
+				}
+			}
 			
-			uint8_t ctrl;
-			ctrl = 0x80 | static_cast< uint8_t >( _reps + 1 ); // +1 to count initial ambiguous value
-			fputc( ctrl, fp_out );
-			fputc( repData, fp_out );
+			// ... data word
+			T repData = _rawbuf[ 0 ];
+			fwrite( &repData, sizeof( T ), 1, fp_out );
 		}
 		else if ( _rawbuf.empty() == false )
 		{
 			// Noisy data.
 
-			uint8_t ctrl;
-			ctrl = static_cast< uint8_t >( _rawbuf.size() );
-			fputc( ctrl, fp_out );
-
-			for ( uint8_t ch : _rawbuf )
+			if ( _bCtrlIsByte )
 			{
-				fputc( ch, fp_out );
+				uint8_t ctrl;
+				ctrl = static_cast<uint8_t>( _rawbuf.size() );
+				fputc( ctrl, fp_out );
+			}
+			else
+			{
+				T ctrl;
+				ctrl = static_cast<T>( _rawbuf.size() );
+				
+				if ( _endian == BIG_ENDIAN )
+				{
+					WriteBigEndian( ctrl );
+				}
+				else
+				{
+					fwrite( &ctrl, sizeof( T ), 1, fp_out );
+				}
+			}
+
+			// ... data words
+			for ( T ch : _rawbuf )
+			{
+				fwrite( &ch, sizeof( T ), 1, fp_out );
 			}
 		}
 
@@ -134,6 +208,53 @@ struct Rle8Encoder
 
 };
 
+// Simple 8-bit RLE
+static void SimpleRLE8( FILE* fp_out, int iPlanes, uint8_t* pInputData, int iInputSize )
+{
+	SimpleRleEncoder< uint8_t > enc8( fp_out, true, LITTLE_ENDIAN );
+
+	for ( int iPlane = 0; iPlane < iPlanes; ++iPlane )
+	{
+		enc8.BeginPlane();
+
+		// Read input, handle planes here - the encoder is unaware.
+		for ( int iCursor = iPlane; iCursor < iInputSize; iCursor += iPlanes )
+		{
+			const uint8_t* pInput = reinterpret_cast<const uint8_t*>( pInputData + iCursor );
+			enc8.Add( *pInput );
+		}
+
+		enc8.Flush();
+
+		// end of plane.
+		fputc( 0, fp_out );
+	}
+}
+
+/*
+// Simple 16-bit RLE Big-Endian (68000?)
+static void SimpleRLE16BE( FILE* fp_out, int iPlanes, uint8_t* pInputData, int iInputSize )
+{
+	SimpleRleEncoder< uint16_t > enc16( fp_out, false, BIG_ENDIAN );
+
+	for ( int iPlane = 0; iPlane < iPlanes; ++iPlane )
+	{
+		enc16.BeginPlane();
+
+		// Read input, handle planes here - the encoder is unaware.
+		for ( int iCursor = iPlane; iCursor < iInputSize; iCursor += iPlanes * 2 )
+		{
+			const uint16_t* pInput = reinterpret_cast<const uint16_t*>( pInputData + iCursor );
+			enc16.Add( *pInput );
+		}
+
+		enc16.Flush();
+
+		// end of plane.
+		fputc( 0, fp_out );
+	}
+}
+*/
 
 //------------------------------------------------------------------------------
 // RLE
@@ -142,7 +263,6 @@ int RLE( int argc, char** argv )
 {
 	const char* pInputName = nullptr;
 	const char* pOutputName = nullptr;
-
 
 	enum eOption
 	{
@@ -154,6 +274,7 @@ int RLE( int argc, char** argv )
 
 	// defaults.
 	int iPlanes = 1;
+	int iWordSize = 1; // TODO: Other word sizes / algorithms
 
 	// parse arguments (after the tool name)
 	for ( int i = 2; i < argc; ++i )
@@ -267,8 +388,15 @@ int RLE( int argc, char** argv )
 	int iInputSize = ftell( fp_in );
 	rewind( fp_in );
 
-	unsigned char* pInputData;
-	pInputData = (unsigned char*)malloc( iInputSize );
+	// round up to word size, padding with zero
+	int iAllocSize = iInputSize;
+	while ( iAllocSize % iWordSize )
+	{
+		++iAllocSize;
+	}
+
+	uint8_t* pInputData;
+	pInputData = (uint8_t*)malloc( iAllocSize );
 	if ( pInputData == NULL )
 	{
 		printf( "FAILED\n" );
@@ -276,32 +404,44 @@ int RLE( int argc, char** argv )
 		return 1;
 	}
 
+	// Read file data
 	fread( pInputData, sizeof( char ), iInputSize, fp_in );
 	fclose( fp_in );
 
-	for ( int iPlane = 0; iPlane < iPlanes; ++iPlane )
+	// Pad the padding space with zeros.
+	uint8_t* pPad = pInputData + iInputSize;
+	for ( int i = iInputSize; i < iAllocSize; ++i )
 	{
-		// Create an encoder for this plane.
-		Rle8Encoder enc( fp_out );
-
-		// Read input, handle planes here - the encoder is unaware.
-		for ( int iCursor = iPlane; iCursor < iInputSize; iCursor += iPlanes )
-		{
-			const uint8_t* pInput = pInputData + iCursor;
-
-			enc.Add( *pInput );
-		}
-
-		enc.Flush();
-
-		// end of plane.
-		fputc( 0, fp_out );
+		*pPad++ = 0;
 	}
-	
+
+	// Encode
+	switch ( iWordSize )
+	{
+
+	case 1:
+		SimpleRLE8( fp_out, iPlanes, pInputData, iInputSize );
+		break;
+
+	/*case 2:
+		SimpleRLE16BE( fp_out, iPlanes, pInputData, iInputSize );
+		break;*/
+
+	}; // switch ( iWordSize )
+
 	// 
 	int fp_out_len = ftell( fp_out );
-	printf( "OK (%d -> %d bytes)\n", iInputSize, fp_out_len );
-	
+
+	printf( "OK (%d", iAllocSize );
+
+	// indicate padding.
+	if ( iAllocSize != iInputSize )
+	{
+		putchar( '*' );
+	}
+
+	printf( " -> %d bytes)\n", fp_out_len );
+
 	// Tidy up
 	free( pInputData );
 	fclose( fp_out );

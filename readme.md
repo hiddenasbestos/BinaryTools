@@ -148,7 +148,7 @@ Compress an image file. Each byte of the input is checked against the previous b
 
 Compress an image file, de-interleaving the file into 4 separate planes. Each plane starts at byte offset 0, 1, 2, 3 respectively and reading of each plane skips ahead by 4 bytes at a time to acquire the next byte of input.
 
-**Notes**
+**Output Format**
 
 * The output data is a sequence of 'RLE blocks' with no additional header or footer data.
 
@@ -160,6 +160,10 @@ Compress an image file, de-interleaving the file into 4 separate planes. Each pl
 * Multiple planes are written sequentially to the output and each is separately terminated with a `00` control byte.
 
 * The maximum run length (or raw data count) is 127. Longer runs are split into multiple RLE blocks.
+
+
+**Notes**
+
 
 * RLE isn't guaranteed to produce a smaller output for all inputs. The algorithm is most effective for inputs with large amounts of repetition such as images or tile maps.
 
