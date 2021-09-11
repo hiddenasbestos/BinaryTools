@@ -297,7 +297,7 @@ int Data( int argc, char** argv )
 			{
 				bOptCompact = true;
 			}
-			else if ( _stricmp( pArg, "-data" ) == 0 )
+			else if ( _stricmp( pArg, "-basic" ) == 0 )
 			{
 				statement = BASIC_DATA;
 			}
