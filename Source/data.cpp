@@ -449,9 +449,11 @@ int Data( int argc, char** argv )
 		// existing line in progress?
 		if ( iLineLength > 0 )
 		{
+			int iUnitLength;
+
 			// measure next piece of data and the previous delimiter
-			int iUnitLength = valueLength( input, valueFormat );
-			iUnitLength += bOptCompact ? 2 : 1;
+			iUnitLength = valueLength( input, valueFormat );
+			iUnitLength += bOptCompact ? 1 : 2;
 
 			// room for delimiter and another piece of data?
 			if ( ( iLineWidth < 0 ) || ( iLineLength + iUnitLength < iLineWidth ) )
