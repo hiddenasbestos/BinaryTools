@@ -68,7 +68,7 @@ Convert a binary file into data statements.
 
 Converts the binary program `zxhello.bin` into BASIC DATA statements. Code will start at line 100 with an increment of 5 for each additional line. Each line will be no longer than 30 characters (including the line number and DATA statement).
 
-```> BinaryTools data hello.txt hello.src -bux -cols 40 -dotbyte -spc 1 -line 10```
+```> BinaryTools data hello.txt hello.src -bux -cols 40 -dotbyte -spc 2 -line 10```
 
 Convert a binary file into byte directives suitable for use by the Atari 8-bit Assembler Editor.
 

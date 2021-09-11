@@ -112,6 +112,9 @@ static int write_byte_binary( uint8_t input, FILE* fp_out )
 
 static int write_spaces( int count, FILE* fp_out )
 {
+	if ( count <= 0 )
+		return 0;
+
 	for ( int i = 0; i < count; ++i )
 	{
 		fputc( ' ', fp_out );
@@ -487,7 +490,7 @@ int Data( int argc, char** argv )
 			}
 			else if ( iSpaces > 0 )
 			{
-				count += write_spaces( iSpaces, fp_out );
+				count += write_spaces( ( iLine >= 0 ) ? iSpaces - 1 : iSpaces, fp_out );
 			}
 				
 			// statement type
