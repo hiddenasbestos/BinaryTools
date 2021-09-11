@@ -46,6 +46,7 @@ enum eStatement
 	ASM_DOTBYTE,
 	ASM_DB,
 	ASM_DCB,
+	ANSI_C
 };
 
 // ... values up to 255
@@ -301,9 +302,9 @@ int Data( int argc, char** argv )
 			{
 				statement = BASIC_DATA;
 			}
-			else if ( _stricmp( pArg, "-dotbyte" ) == 0 )
+			else if ( _stricmp( pArg, "-c" ) == 0 )
 			{
-				statement = ASM_DOTBYTE;
+				statement = ANSI_C;
 			}
 			else if ( _stricmp( pArg, "-db" ) == 0 )
 			{
@@ -312,6 +313,10 @@ int Data( int argc, char** argv )
 			else if ( _stricmp( pArg, "-dcb" ) == 0 )
 			{
 				statement = ASM_DCB;
+			}
+			else if ( _stricmp( pArg, "-dotbyte" ) == 0 )
+			{
+				statement = ASM_DOTBYTE;
 			}
 			else if ( _stricmp( pArg, "-tab" ) == 0 )
 			{
@@ -428,6 +433,11 @@ int Data( int argc, char** argv )
 	case ASM_DCB:
 		printf( "DC.B" );
 		break;
+
+	case ANSI_C:
+		printf( "C/C++" );
+		break;
+
 	}
 
 	if ( iLine >= 0 )
@@ -454,6 +464,11 @@ int Data( int argc, char** argv )
 			// measure next piece of data and the previous delimiter
 			iUnitLength = valueLength( input, valueFormat );
 			iUnitLength += bOptCompact ? 1 : 2;
+			// .. and the possible trailing delimiter for EOL
+			if ( statement == ANSI_C )
+			{
+				++iUnitLength;
+			}
 
 			// room for delimiter and another piece of data?
 			if ( ( iLineWidth < 0 ) || ( iLineLength + iUnitLength < iLineWidth ) )
@@ -464,7 +479,10 @@ int Data( int argc, char** argv )
 			else
 			{
 				// end of line.
-				fprintf( fp_out, "\n" );
+				count = fprintf( fp_out, ( statement == ANSI_C ) ? ",\n" : "\n" );
+				iLineLength += count;
+
+				// done.
 				iLineLength = 0;
 
 				if ( iLine >= 0 )
@@ -486,7 +504,7 @@ int Data( int argc, char** argv )
 			}
 
 			// spacing.
-			if ( statement != BASIC_DATA && iTabs > 0 && iLine < 0 )
+			if ( ( statement != BASIC_DATA ) && iTabs > 0 && iLine < 0 )
 			{
 				count += write_tabs( iTabs, fp_out );
 			}
@@ -513,6 +531,10 @@ int Data( int argc, char** argv )
 
 			case ASM_DCB:
 				count += fprintf( fp_out, "dc.b " );
+				break;
+
+			case ANSI_C:
+				// nothing
 				break;
 
 			}

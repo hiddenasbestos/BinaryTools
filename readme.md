@@ -26,7 +26,7 @@ Convert a binary file into data statements.
 
 **Usage**
 ```
- BinaryTools data <file> <output> [-basic|-db|-dcb|-dotbyte]
+ BinaryTools data <file> <output> [-basic|-c|-db|-dcb|-dotbyte]
               [-line start[,step]] [-tab n|-spc n] [-cols width] [-compact]
               [-amp|-bin|-bux|-dec|-hex|-oct|-pct]
 
@@ -35,6 +35,7 @@ Convert a binary file into data statements.
   <output>    Text output file for the statements.
 
   -basic      Write BASIC 'DATA' statements (default).
+  -c          Write C/C++ initializer list.
   -db         Write assembly 'db' statements.
   -dcb        Write assembly 'dc.b' statements.
   -dotbyte    Write assembly '.BYTE' statements.
