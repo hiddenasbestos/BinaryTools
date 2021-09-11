@@ -550,15 +550,15 @@ int Data( int argc, char** argv )
 			break;
 
 		case HEX_0X:
-			count = fprintf( fp_out, "0x%X", input );
+			count = fprintf( fp_out, "0x%02X", input );
 			break;
 
 		case HEX_DOLLAR:
-			count = fprintf( fp_out, "$%X", input );
+			count = fprintf( fp_out, "$%02X", input );
 			break;
 
 		case HEX_AMPERSAND:
-			count = fprintf( fp_out, "&%X", input );
+			count = fprintf( fp_out, "&%02X", input );
 			break;
 
 		case BIN_0B:
