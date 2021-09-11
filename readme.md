@@ -26,7 +26,7 @@ Convert a binary file into data statements.
 
 **Usage**
 ```
- BinaryTools data <file> <output> [-basic|-byte|-db|-dcb]
+ BinaryTools data <file> <output> [-basic|-db|-dcb|-dotbyte]
               [-line start[,step]] [-tab n|-spc n] [-cols width] [-compact]
               [-amp|-bin|-bux|-dec|-hex|-oct|-pct]
 
@@ -35,9 +35,9 @@ Convert a binary file into data statements.
   <output>    Text output file for the statements.
 
   -basic      Write BASIC 'DATA' statements (default).
-  -byte       Write assembly '.byte' statements.
   -db         Write assembly 'db' statements.
   -dcb        Write assembly 'dc.b' statements.
+  -dotbyte    Write assembly '.BYTE' statements.
 
   -line L,S   Specify the starting line number and optionally a custom step.
               Default is no line numbers.
@@ -68,7 +68,7 @@ Convert a binary file into data statements.
 
 Converts the binary program `zxhello.bin` into BASIC DATA statements. Code will start at line 100 with an increment of 5 for each additional line. Each line will be no longer than 30 characters (including the line number and DATA statement).
 
-```> BinaryTools data hello.txt hello.src -bux -cols 40 -byte -spc 1 -line 10```
+```> BinaryTools data hello.txt hello.src -bux -cols 40 -dotbyte -spc 1 -line 10```
 
 Convert a binary file into byte directives suitable for use by the Atari 8-bit Assembler Editor.
 

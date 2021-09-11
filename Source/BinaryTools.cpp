@@ -60,14 +60,14 @@ static Tool gTools[] =
 	//-----------------
 
 	{
-		"data", Data, "Convert a binary file into data statements.", "<file> <output> [-basic|-byte|-db|-dcb]\n\t[-line start[,step]] [-tab n|-spc n] [-cols width] [-compact]\n\t[-amp|-bin|-bux|-dec|-hex|-oct|-pct]",
+		"data", Data, "Convert a binary file into data statements.", "<file> <output> [-basic|-db|-dcb|-dotbyte]\n\t[-line start[,step]] [-tab n|-spc n] [-cols width] [-compact]\n\t[-amp|-bin|-bux|-dec|-hex|-oct|-pct]",
 		"  <file>      An input file to read.\n\n"
 		"  <output>    Text output file for the statements.\n\n"
 		
 		"  -basic      Write BASIC 'DATA' statements (default).\n"
-		"  -byte       Write assembly '.byte' statements.\n"
 		"  -db         Write assembly 'db' statements.\n"
-		"  -dcb        Write assembly 'dc.b' statements.\n\n"
+		"  -dcb        Write assembly 'dc.b' statements.\n"
+		"  -dotbyte    Write assembly '.BYTE' statements.\n\n"
 
 		"  -line L,S   Specify the starting line number and optionally a custom step.\n"
 	    "              Default is no line numbers.\n\n"

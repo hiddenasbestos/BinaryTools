@@ -43,7 +43,7 @@ enum eValueFormat
 enum eStatement
 {
 	BASIC_DATA,
-	ASM_BYTE,
+	ASM_DOTBYTE,
 	ASM_DB,
 	ASM_DCB,
 };
@@ -298,9 +298,9 @@ int Data( int argc, char** argv )
 			{
 				statement = BASIC_DATA;
 			}
-			else if ( _stricmp( pArg, "-byte" ) == 0 )
+			else if ( _stricmp( pArg, "-dotbyte" ) == 0 )
 			{
-				statement = ASM_BYTE;
+				statement = ASM_DOTBYTE;
 			}
 			else if ( _stricmp( pArg, "-db" ) == 0 )
 			{
@@ -414,7 +414,7 @@ int Data( int argc, char** argv )
 		printf( "DATA" );
 		break;
 
-	case ASM_BYTE:
+	case ASM_DOTBYTE:
 		printf( ".BYTE" );
 		break;
 
@@ -498,8 +498,8 @@ int Data( int argc, char** argv )
 				count += fprintf( fp_out, "DATA " );
 				break;
 
-			case ASM_BYTE:
-				count += fprintf( fp_out, ".byte " );
+			case ASM_DOTBYTE:
+				count += fprintf( fp_out, ".BYTE " );
 				break;
 
 			case ASM_DB:
