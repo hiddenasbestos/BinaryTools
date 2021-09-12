@@ -1,0 +1,98 @@
+;
+; MIT License
+; 
+; Copyright (c) 2021 David Walters
+; 
+; Permission is hereby granted, free of charge, to any person obtaining a copy
+; of this software and associated documentation files (the "Software"), to deal
+; in the Software without restriction, including without limitation the rights
+; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+; copies of the Software, and to permit persons to whom the Software is
+; furnished to do so, subject to the following conditions:
+; 
+; The above copyright notice and this permission notice shall be included in all
+; copies or substantial portions of the Software.
+; 
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+; SOFTWARE.
+;
+
+; Simple demonstration of RLE decompression in Z80 assembly
+; Written for vasm 1.8L "oldstyle", other assemblers may require changes.
+; Note this demo only supports single plane mode.
+
+	org $8000
+	
+start:
+	; RLE demo
+	ld hl,RLE_DATA
+	ld de,RLE_OUTPUT
+	call RLEDecompress
+	
+inf_loop:
+	; Endless loop to end the program.
+	jp inf_loop
+
+RLE_DATA:
+
+	; "HELLO WORLD" compressed as RLE
+	
+	; > binarytools rle hello.txt hello.rle
+	; > binarytools data -db hello.rle hello.z80
+	; ('hello.z80' pasted below)
+	
+	db 2, 72, 69, 130, 76, 7, 79, 32, 87
+	db 79, 82, 76, 68, 0
+
+RLE_OUTPUT:
+	; Space for decompression output.
+	dsb 32
+
+	
+;========================================================
+;
+; RLEDecompress
+;
+; Single plane decompression.
+;
+; Inputs:	HL = Address of compressed RLE data
+;			DE = Address of decompression target
+;
+; Trashes A and B registers.
+;
+;========================================================
+
+RLEDecompress:
+	ld a,(hl)						; Load the RLE block header
+	inc hl
+	or a
+	ret z							; Header is 00? This marks the end of RLE data
+	jp M, RLEDecompress_RPT			; M (minus/sign) flag is set for >= $80 values
+	; * fall through
+
+RLEDecompress_RAW:					; Top bit is zero.
+	ld b,a							; other bits are raw data count 1-127
+RLEDecompress_RAW_loop:	
+	ld a,(hl)						; Read a raw byte from source.
+	inc hl
+	ld (de),a						; Write raw byte to destination.
+	inc de
+	djnz RLEDecompress_RAW_loop		; Decrease count (in B), loop until zero.
+	jr RLEDecompress				; Done! Start the next RLE block.
+
+RLEDecompress_RPT:					; Top bit is one.
+	and %01111111					; clear top bit, leaving a repeat count (1-127)
+	ld b,a							; load repeat count into B 
+	ld a,(hl)						; load the data to repeat from source
+	inc hl
+RLEDecompress_RPT_loop:
+	ld (de),a						; store data into destination
+	inc de
+	djnz RLEDecompress_RPT_loop		; Decrease count (in B), loop until zero.
+	jr RLEDecompress				; Done! Start the next RLE block.
+
