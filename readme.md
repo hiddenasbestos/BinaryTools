@@ -192,7 +192,7 @@ Compress an image file, de-interleaving the file into 4 separate planes. Each pl
 
 * RLE isn't guaranteed to produce a smaller output for all inputs. The algorithm is most effective for inputs with large amounts of repetition such as images or tile maps.
 
-* An example decompression routine written in Z80 assembly language can be found in the [Extras](https://github.com/hiddenasbestos/BinaryTools/tree/master/Extras) folder in the git repository.
+* An example decompression routine written in Z80 assembly language can be found in the [Extras](https://github.com/hiddenasbestos/BinaryTools/tree/master/Extras) folder of the git repository.
 
 ---
 
