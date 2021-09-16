@@ -148,6 +148,7 @@ int Data( int argc, char** argv )
 		NONE,
 		OPT_LINE_NUMBER,
 		OPT_COLUMNS,
+		OPT_PITCH,
 		OPT_TABS,
 		OPT_SPACES,
 	};
@@ -161,6 +162,7 @@ int Data( int argc, char** argv )
 	bool bOptCompact = false;
 	eValueFormat valueFormat = DECIMAL;
 	int iLineWidth = 40;
+	int iLinePitch = 0;
 	int iLine = -1; // -1 = default - no line numbers
 	int iStep = 10;
 
@@ -239,6 +241,33 @@ int Data( int argc, char** argv )
 					{
 						// error.
 						PrintError( "Invalid -cols width %d. Must be 20 or more.", iValue );
+						return 1;
+					}
+				}
+
+				break;
+
+			case OPT_PITCH:
+
+				{
+					int iValue;
+					char* pEnd = nullptr;
+					iValue = strtol( pArg, &pEnd, 10 );
+
+					if ( iValue >= 1 )
+					{
+						iLinePitch = iValue;
+					}
+					else if ( *pEnd != 0 )
+					{
+						// error.
+						PrintError( "Invalid -pitch parameter \"%s\".", pArg );
+						return 1;
+					}
+					else if ( iValue < 1 )
+					{
+						// error.
+						PrintError( "Invalid -pitch width %d. Must be 1 or more.", iValue );
 						return 1;
 					}
 				}
@@ -334,6 +363,10 @@ int Data( int argc, char** argv )
 			{
 				specialNextArg = OPT_COLUMNS;
 			}
+			else if ( _stricmp( pArg, "-pitch" ) == 0 )
+			{
+				specialNextArg = OPT_PITCH;
+			}
 			else if ( _stricmp( pArg, "-dec" ) == 0 )
 			{
 				valueFormat = DECIMAL;
@@ -385,7 +418,7 @@ int Data( int argc, char** argv )
 		}
 	}
 
-	if ( pInputName == nullptr || pOutputName == nullptr )
+	if ( pInputName == nullptr || pOutputName == nullptr || specialNextArg != NONE )
 	{
 		PrintHelp( "data" );
 		return 1;
@@ -448,6 +481,7 @@ int Data( int argc, char** argv )
 	printf( " to \"%s\" ... ", pOutputName );
 
 	int iLineLength = 0;
+	int iLineBytes = 0; // for pitch limit
 
 	while ( feof( fp_in ) == 0 )
 	{
@@ -471,7 +505,8 @@ int Data( int argc, char** argv )
 			}
 
 			// room for delimiter and another piece of data?
-			if ( ( iLineWidth < 0 ) || ( iLineLength + iUnitLength < iLineWidth ) )
+			else if ( ( iLinePitch > 0 && iLineBytes < iLinePitch ) || 
+					  ( iLinePitch == 0 && ( ( iLineWidth < 0 ) || ( iLineLength + iUnitLength < iLineWidth ) ) ) )
 			{
 				count = fprintf( fp_out, bOptCompact ? "," : ", " );
 				iLineLength += count;
@@ -484,6 +519,7 @@ int Data( int argc, char** argv )
 
 				// done.
 				iLineLength = 0;
+				iLineBytes = 0;
 
 				if ( iLine >= 0 )
 				{
@@ -578,6 +614,8 @@ int Data( int argc, char** argv )
 		}
 
 		iLineLength += count;
+
+		++iLineBytes;
 	}
 
 	fprintf( fp_out, "\n" );

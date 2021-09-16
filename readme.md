@@ -27,8 +27,8 @@ Convert a binary file into data statements.
 **Usage**
 ```
  BinaryTools data <file> <output> [-basic|-c|-db|-dcb|-dotbyte]
-              [-line start[,step]] [-tab n|-spc n] [-cols width] [-compact]
-              [-amp|-bin|-bux|-dec|-hex|-oct|-pct]
+              [-line start[,step]] [-tab n|-spc n] [-cols width]|[-pitch n]
+              [-compact] [-amp|-bin|-bux|-dec|-hex|-oct|-pct]
 
   <file>      An input file to read.
 
@@ -51,6 +51,9 @@ Convert a binary file into data statements.
 
   -cols       Specify the maximum line length.
               Default is 40 columns, minimum is 20.
+
+  -pitch      Specify the number of bytes on a line. If used, -cols option is
+              ignored.
 
   -compact    Don't include a space after each comma delimiter between values.
 

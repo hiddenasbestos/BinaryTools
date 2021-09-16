@@ -60,7 +60,7 @@ static Tool gTools[] =
 	//-----------------
 
 	{
-		"data", Data, "Convert a binary file into data statements.", "<file> <output> [-basic|-c|-db|-dcb|-dotbyte]\n\t[-line start[,step]] [-tab n|-spc n] [-cols width] [-compact]\n\t[-amp|-bin|-bux|-dec|-hex|-oct|-pct]",
+		"data", Data, "Convert a binary file into data statements.", "<file> <output> [-basic|-c|-db|-dcb|-dotbyte]\n\t[-line start[,step]] [-tab n|-spc n] [-cols width]|[-pitch n]\n\t[-compact] [-amp|-bin|-bux|-dec|-hex|-oct|-pct]",
 		"  <file>      An input file to read.\n\n"
 		"  <output>    Text output file for the statements.\n\n"
 		
@@ -81,6 +81,9 @@ static Tool gTools[] =
 
 		"  -cols W     Specify the maximum line length.\n"
 		"              Default is 40 columns, minimum is 20.\n\n"
+
+		"  -pitch N    Specify the number of bytes on a line. If used, -cols option is\n"
+		"              ignored.\n\n"
 
 		"  -compact    Don't include a space after each comma delimiter between values.\n\n"
 		
