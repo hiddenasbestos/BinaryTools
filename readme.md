@@ -158,11 +158,13 @@ Compress a file using run-length encoding.
 
 **Usage**
 ```
-BinaryTools rle <file> <output> [-planes N]
+BinaryTools rle <file> <output> [-append] [-planes N]
 
   <file>      The input file.
 
   <output>    The RLE encoded/compressed output.
+
+  -append     Append to the output file, rather than overwriting it.
 
   -planes N   Specify the number of interleaved planes in the input.
               Default is 1 plane.
