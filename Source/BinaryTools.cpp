@@ -85,6 +85,7 @@ static Tool gTools[] =
 		"  -pitch N    Specify the number of bytes on a line. If used, -cols option is\n"
 		"              ignored.\n\n"
 
+		"  -append     Append to the output file, rather than overwriting it.\n"
 		"  -compact    Don't include a space after each comma delimiter between values.\n\n"
 		
 		"  -amp        Write values in hexadecimal with '&' prefix.\n"

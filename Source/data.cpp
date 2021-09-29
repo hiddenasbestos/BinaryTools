@@ -159,6 +159,7 @@ int Data( int argc, char** argv )
 	eStatement statement = BASIC_DATA;
 	int iTabs = 1;
 	int iSpaces = 0;
+	bool bOptAppend = false;
 	bool bOptCompact = false;
 	eValueFormat valueFormat = DECIMAL;
 	int iLineWidth = 40;
@@ -323,7 +324,11 @@ int Data( int argc, char** argv )
 		}
 		else if ( *pArg == '-' )
 		{
-			if ( _stricmp( pArg, "-compact" ) == 0 )
+			if ( _stricmp( pArg, "-append" ) == 0 )
+			{
+				bOptAppend = true;
+			}
+			else if ( _stricmp( pArg, "-compact" ) == 0 )
 			{
 				bOptCompact = true;
 			}
@@ -439,14 +444,21 @@ int Data( int argc, char** argv )
 	}
 
 	// ... output file
-	err = fopen_s( &fp_out, pOutputName, "wb" );
+	err = fopen_s( &fp_out, pOutputName, bOptAppend ? "ab" : "wb" );
 	if ( err != 0 || fp_out == nullptr )
 	{
 		PrintError( "Cannot open output file \"%s\"", pOutputName );
 		return 1;
 	}
 
-	Info( "Writing " );
+	if ( bOptAppend )
+	{
+		Info( "Appending " );
+	}
+	else
+	{
+		Info( "Writing " );
+	}
 
 	switch ( statement )
 	{

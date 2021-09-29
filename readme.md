@@ -55,6 +55,7 @@ Convert a binary file into data statements.
   -pitch      Specify the number of bytes on a line. If used, -cols option is
               ignored.
 
+  -append     Append to the output file, rather than overwriting it.
   -compact    Don't include a space after each comma delimiter between values.
 
   -amp        Write values in hexadecimal with '&' prefix.
