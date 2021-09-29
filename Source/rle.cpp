@@ -273,6 +273,7 @@ int RLE( int argc, char** argv )
 	eOption specialNextArg = NONE;
 
 	// defaults.
+	bool bOptAppend = false;
 	int iPlanes = 1;
 	int iWordSize = 1; // TODO: Other word sizes / algorithms
 
@@ -322,6 +323,10 @@ int RLE( int argc, char** argv )
 			if ( _stricmp( pArg, "-planes" ) == 0 )
 			{
 				specialNextArg = OPT_PLANES;
+			}
+			else if ( _stricmp( pArg, "-append" ) == 0 )
+			{
+				bOptAppend = true;
 			}
 			else
 			{
@@ -376,13 +381,20 @@ int RLE( int argc, char** argv )
 	}
 
 	// ... output file
-	err = fopen_s( &fp_out, pOutputName, "wb" );
+	err = fopen_s( &fp_out, pOutputName, bOptAppend ? "ab" : "wb" );
 	if ( err != 0 || fp_out == nullptr )
 	{
 		printf( "FAILED\n" );
 		PrintError( "Cannot open output file \"%s\"", pOutputName );
 		return 1;
 	}
+	
+	if ( bOptAppend )
+	{
+		fseek( fp_out, 0, SEEK_END );
+	}
+
+	int fp_out_start = ftell( fp_out );
 
 	fseek( fp_in, 0, SEEK_END );
 	int iInputSize = ftell( fp_in );
@@ -430,7 +442,7 @@ int RLE( int argc, char** argv )
 	}; // switch ( iWordSize )
 
 	// 
-	int fp_out_len = ftell( fp_out );
+	int fp_out_len = ftell( fp_out ) - fp_out_start;
 
 	printf( "OK (%d", iAllocSize );
 

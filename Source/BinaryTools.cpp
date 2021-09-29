@@ -60,7 +60,7 @@ static Tool gTools[] =
 	//-----------------
 
 	{
-		"data", Data, "Convert a binary file into data statements.", "<file> <output> [-basic|-c|-db|-dcb|-dotbyte]\n\t[-line start[,step]] [-tab n|-spc n] [-cols width]|[-pitch n]\n\t[-compact] [-amp|-bin|-bux|-dec|-hex|-oct|-pct]",
+		"data", Data, "Convert a binary file into data statements.", "<file> <output> [-basic|-c|-db|-dcb|-dotbyte]\n\t[-line start[,step]] [-tab n|-spc n] [-cols width]|[-pitch n]\n\t[-append] [-compact] [-amp|-bin|-bux|-dec|-hex|-oct|-pct]",
 		"  <file>      An input file to read.\n\n"
 		"  <output>    Text output file for the statements.\n\n"
 		
@@ -116,9 +116,10 @@ static Tool gTools[] =
 	},
 
 	{
-		"rle", RLE, "Compress a file using run-length encoding.", "<file> <output> [-planes N]",
+		"rle", RLE, "Compress a file using run-length encoding.", "<file> <output> [-append] [-planes N]",
 		"  <file>      The input file.\n\n"
 		"  <output>    The RLE encoded/compressed output.\n\n"
+		"  -append     Append to the output file, rather than overwriting it.\n\n"
 		"  -planes N   Specify the number of interleaved planes in the input.\n"
 		"              Default is 1 plane.\n"
 	},
