@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2021 David Walters
+Copyright (c) 2021-2022 David Walters
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -177,7 +177,7 @@ static void printHello()
 {
 	printf( "\n------------------------------------------------------------------\n"
 			" BinaryTools Utility Collection\n"
-			" Copyright (c) 2021, by David Walters. See LICENSE for details.\n"
+			" Copyright (c) 2021-2022, by David Walters. See LICENSE for details.\n"
 			"------------------------------------------------------------------\n\n" );
 }
 
