@@ -35,9 +35,12 @@ enum eValueFormat
 	HEX_0X,
 	HEX_DOLLAR,
 	HEX_AMPERSAND,
+	HEX_AMP_H,
 	BIN_0B,
+	BIN_AMP_B,
 	BIN_PERCENT,
-	OCTAL
+	OCTAL,
+	OCTAL_AMP_O,
 };
 
 enum eStatement
@@ -71,14 +74,16 @@ static int valueLength( int val, eValueFormat mode )
 		}
 
 	case HEX_0X:
-		return 4; // 0x##
+	case HEX_AMP_H:
+		return 4; // 0x## or &H##
 
 	case HEX_AMPERSAND:
 	case HEX_DOLLAR:
 		return 3; // $## or &##
 
 	case BIN_0B:
-		return 10; // 0x########
+	case BIN_AMP_B:
+		return 10; // 0b######## or &B########
 
 	case BIN_PERCENT:
 		return 9; // %########
@@ -95,6 +100,20 @@ static int valueLength( int val, eValueFormat mode )
 		else
 		{
 			return 4; // 0###
+		}
+
+	case OCTAL_AMP_O:
+		if ( val < 8 )
+		{
+			return 3; // &O#
+		}
+		else if ( val < 0100 /*64*/ )
+		{
+			return 4; // &O##
+		}
+		else
+		{
+			return 5; // &O###
 		}
 
 	};
@@ -388,9 +407,17 @@ int Data( int argc, char** argv )
 			{
 				valueFormat = HEX_AMPERSAND;
 			}
+			else if ( _stricmp( pArg, "-amh" ) == 0 )
+			{
+				valueFormat = HEX_AMP_H;
+			}
 			else if ( _stricmp( pArg, "-bin" ) == 0 )
 			{
 				valueFormat = BIN_0B;
+			}
+			else if ( _stricmp( pArg, "-amb" ) == 0 )
+			{
+				valueFormat = BIN_AMP_B;
 			}
 			else if ( _stricmp( pArg, "-pct" ) == 0 )
 			{
@@ -399,6 +426,10 @@ int Data( int argc, char** argv )
 			else if ( _stricmp( pArg, "-oct" ) == 0 )
 			{
 				valueFormat = OCTAL;
+			}
+			else if ( _stricmp( pArg, "-amo" ) == 0 )
+			{
+				valueFormat = OCTAL_AMP_O;
 			}
 			else
 			{
@@ -605,12 +636,21 @@ int Data( int argc, char** argv )
 			count = fprintf( fp_out, "$%02X", input );
 			break;
 
+		case HEX_AMP_H:
+			count = fprintf( fp_out, "&H%02X", input );
+			break;
+
 		case HEX_AMPERSAND:
 			count = fprintf( fp_out, "&%02X", input );
 			break;
 
 		case BIN_0B:
 			count = fprintf( fp_out, "0b" );
+			count += write_byte_binary( input, fp_out );
+			break;
+
+		case BIN_AMP_B:
+			count = fprintf( fp_out, "&B" );
 			count += write_byte_binary( input, fp_out );
 			break;
 
@@ -621,6 +661,10 @@ int Data( int argc, char** argv )
 
 		case OCTAL:
 			count = fprintf( fp_out, "0%o", input );
+			break;
+
+		case OCTAL_AMP_O:
+			count = fprintf( fp_out, "&O%o", input );
 			break;
 
 		}

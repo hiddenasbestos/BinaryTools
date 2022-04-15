@@ -60,7 +60,7 @@ static Tool gTools[] =
 	//-----------------
 
 	{
-		"data", Data, "Convert a binary file into data statements.", "<file> <output> [-basic|-c|-db|-dcb|-dotbyte]\n\t[-line start[,step]] [-tab n|-spc n] [-cols width]|[-pitch n]\n\t[-append] [-compact] [-amp|-bin|-bux|-dec|-hex|-oct|-pct]",
+		"data", Data, "Convert a binary file into data statements.", "<file> <output> [-basic|-c|-db|-dcb|-dotbyte]\n\t[-line start[,step]] [-tab n|-spc n] [-cols width]|[-pitch n]\n\t[-amb|-amh|-amo|-amp|-bin|-bux|-dec|-hex|-oct|-pct]\n\t[-append] [-compact]",
 		"  <file>      An input file to read.\n\n"
 		"  <output>    Text output file for the statements.\n\n"
 		
@@ -84,17 +84,22 @@ static Tool gTools[] =
 
 		"  -pitch N    Specify the number of bytes on a line. If used, -cols option is\n"
 		"              ignored.\n\n"
-
-		"  -append     Append to the output file, rather than overwriting it.\n"
-		"  -compact    Don't include a space after each comma delimiter between values.\n\n"
 		
+		"  -amb        Write values in binary with '&B' prefix.\n"
+		"  -amh        Write values in hexadecimal with '&H' prefix.\n"
+		"  -amo        Write values in octal with '&O' prefix.\n"
 		"  -amp        Write values in hexadecimal with '&' prefix.\n"
 		"  -bin        Write values in binary with '0b' prefix.\n"
 		"  -bux        Write values in hexadecimal with '$' prefix.\n"
 		"  -dec        Write values in decimal (default).\n"
 		"  -hex        Write values in hexadecimal with '0x' prefix.\n"
 		"  -oct        Write values in octal with '0' prefix.\n"
-		"  -pct        Write values in binary with '%' prefix.\n"
+		"  -pct        Write values in binary with '%' prefix.\n" 
+		
+		"\n"
+
+		"  -append     Append to the output file, rather than overwriting it.\n"
+		"  -compact    Don't include a space after each comma delimiter between values.\n"
 		
 	},
 

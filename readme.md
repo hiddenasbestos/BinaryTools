@@ -28,7 +28,8 @@ Convert a binary file into data statements.
 ```
  BinaryTools data <file> <output> [-basic|-c|-db|-dcb|-dotbyte]
               [-line start[,step]] [-tab n|-spc n] [-cols width]|[-pitch n]
-              [-compact] [-amp|-bin|-bux|-dec|-hex|-oct|-pct]
+              [-amb|-amh|-amo|-amp|-bin|-bux|-dec|-hex|-oct|-pct]
+              [-append] [-compact]
 
   <file>      An input file to read.
 
@@ -55,9 +56,9 @@ Convert a binary file into data statements.
   -pitch      Specify the number of bytes on a line. If used, -cols option is
               ignored.
 
-  -append     Append to the output file, rather than overwriting it.
-  -compact    Don't include a space after each comma delimiter between values.
-
+  -amb        Write values in binary with '&B' prefix.
+  -amh        Write values in hexadecimal with '&H' prefix.
+  -amo        Write values in octal with '&O' prefix.
   -amp        Write values in hexadecimal with '&' prefix.
   -bin        Write values in binary with '0b' prefix.
   -bux        Write values in hexadecimal with '$' prefix.
@@ -65,6 +66,9 @@ Convert a binary file into data statements.
   -hex        Write values in hexadecimal with '0x' prefix.
   -oct        Write values in octal with '0' prefix.
   -pct        Write values in binary with '%' prefix.
+
+  -append     Append to the output file, rather than overwriting it.
+  -compact    Don't include a space after each comma delimiter between values.
 ```
 
 **Examples**
