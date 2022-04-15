@@ -175,10 +175,10 @@ static int findTool( const char* pName )
 
 static void printHello()
 {
-	printf( "\n------------------------------------------------------------------\n"
+	printf( "\n-----------------------------------------------------------------------\n"
 			" BinaryTools Utility Collection\n"
 			" Copyright (c) 2021-2022, by David Walters. See LICENSE for details.\n"
-			"------------------------------------------------------------------\n\n" );
+			"-----------------------------------------------------------------------\n\n" );
 }
 
 static void printUsage()
